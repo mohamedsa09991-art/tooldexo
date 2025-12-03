@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+    
+    <!-- Homepage -->
+    <url>
+        <loc>https://tooldexo.com/</loc>
+        <lastmod>2024-12-02</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1.0</priority>
+    </url>
+    
+    <!-- Word Counter Tool -->
+    <url>
+        <loc>https://tooldexo.com/#word-counter</loc>
+        <lastmod>2024-12-02</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    
+    <!-- Case Converter Tool -->
+    <url>
+        <loc>https://tooldexo.com/#case-converter</loc>
+        <lastmod>2024-12-02</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <!-- Percentage Calculator -->
+    <url>
+        <loc>https://tooldexo.com/#percentage-calc</loc>
+        <lastmod>2024-12-02</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <!-- Unit Converter -->
+    <url>
+        <loc>https://tooldexo.com/#unit-converter</loc>
+        <lastmod>2024-12-02</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <!-- Age Calculator -->
+    <url>
+        <loc>https://tooldexo.com/#age-calculator</loc>
+        <lastmod>2024-12-02</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <!-- Password Generator -->
+    <url>
+        <loc>https://tooldexo.com/#password-generator</loc>
+        <lastmod>2024-12-02</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    
+    <!-- QR Code Generator -->
+    <url>
+        <loc>https://tooldexo.com/#qr-generator</loc>
+        <lastmod>2024-12-02</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <!-- Color Picker -->
+    <url>
+        <loc>https://tooldexo.com/#color-picker</loc>
+        <lastmod>2024-12-02</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
+    <!-- Text Compare Tool -->
+    <url>
+        <loc>https://tooldexo.com/#text-diff</loc>
+        <lastmod>2024-12-02</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
+    <!-- Lorem Ipsum Generator -->
+    <url>
+        <loc>https://tooldexo.com/#lorem-ipsum</loc>
+        <lastmod>2024-12-02</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
+    <!-- BMI Calculator -->
+    <url>
+        <loc>https://tooldexo.com/#bmi-calculator</loc>
+        <lastmod>2024-12-02</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    
+    <!-- Tip Calculator -->
+    <url>
+        <loc>https://tooldexo.com/#tip-calculator</loc>
+        <lastmod>2024-12-02</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <!-- Loan Calculator -->
+    <url>
+        <loc>https://tooldexo.com/#loan-calculator</loc>
+        <lastmod>2024-12-02</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <!-- Time Zone Converter -->
+    <url>
+        <loc>https://tooldexo.com/#timezone-converter</loc>
+        <lastmod>2024-12-02</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <!-- Markdown Editor -->
+    <url>
+        <loc>https://tooldexo.com/#markdown-editor</loc>
+        <lastmod>2024-12-02</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
+    <!-- JSON Formatter -->
+    <url>
+        <loc>https://tooldexo.com/#json-formatter</loc>
+        <lastmod>2024-12-02</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <!-- Base64 Tool -->
+    <url>
+        <loc>https://tooldexo.com/#base64-tool</loc>
+        <lastmod>2024-12-02</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
+    <!-- Currency Converter -->
+    <url>
+        <loc>https://tooldexo.com/#currency-converter</loc>
+        <lastmod>2024-12-02</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    
+    <!-- Image Resizer -->
+    <url>
+        <loc>https://tooldexo.com/#image-resizer</loc>
+        <lastmod>2024-12-02</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    
+    <!-- Calorie Calculator -->
+    <url>
+        <loc>https://tooldexo.com/#calorie-calculator</loc>
+        <lastmod>2024-12-02</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    
+    <!-- Mortgage Calculator -->
+    <url>
+        <loc>https://tooldexo.com/#mortgage-calculator</loc>
+        <lastmod>2024-12-02</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    
+    <!-- Tax Calculator -->
+    <url>
+        <loc>https://tooldexo.com/#tax-calculator</loc>
+        <lastmod>2024-12-02</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    
+    <!-- Grade Calculator -->
+    <url>
+        <loc>https://tooldexo.com/#grade-calculator</loc>
+        <lastmod>2024-12-02</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <!-- Date Calculator -->
+    <url>
+        <loc>https://tooldexo.com/#date-calculator</loc>
+        <lastmod>2024-12-02</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <!-- Random Number Generator -->
+    <url>
+        <loc>https://tooldexo.com/#random-number</loc>
+        <lastmod>2024-12-02</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <!-- File Size Converter -->
+    <url>
+        <loc>https://tooldexo.com/#filesize-converter</loc>
+        <lastmod>2024-12-02</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
+    <!-- Character Counter -->
+    <url>
+        <loc>https://tooldexo.com/#character-counter</loc>
+        <lastmod>2024-12-02</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <!-- Compound Interest Calculator -->
+    <url>
+        <loc>https://tooldexo.com/#compound-interest</loc>
+        <lastmod>2024-12-02</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+</urlset>
