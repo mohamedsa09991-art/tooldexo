@@ -166,6 +166,8 @@ function initializeWordCounter() {
     const textarea = document.getElementById('wordCountText');
     if (textarea) {
         textarea.addEventListener('input', updateWordCount);
+        // Initialize with empty values
+        updateWordCount();
     }
 }
 
