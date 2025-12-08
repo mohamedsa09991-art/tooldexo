@@ -22,6 +22,8 @@ const TOOLS_CONFIG = [
     { id: 'compound-interest', name: '📈 Compound Interest', category: 'calc' },
     { id: 'salary-calculator', name: '💵 Salary Calculator', category: 'calc' },
     { id: 'bodyfat-calculator', name: '💪 Body Fat Calc', category: 'calc' },
+    { id: 'hash-generator', name: '🔐 Hash Generator', category: 'calc' },
+    { id: 'favicon-generator', name: '🎨 Favicon Generator', category: 'calc' },
     
     { id: 'unit-converter', name: '📏 Unit Converter', category: 'converter' },
     { id: 'currency-converter', name: '💱 Currency Conv', category: 'converter' },
@@ -34,11 +36,9 @@ const TOOLS_CONFIG = [
     { id: 'color-picker', name: '🎨 Color Picker', category: 'generator' },
     { id: 'lorem-ipsum', name: '📄 Lorem Ipsum', category: 'generator' },
     { id: 'random-number', name: '🎲 Random Number', category: 'generator' },
-    { id: 'favicon-generator', name: '🎨 Favicon Generator', category: 'generator' },
     
     { id: 'json-formatter', name: '{ } JSON Formatter', category: 'dev' },
-    { id: 'base64-tool', name: '🔐 Base64 Tool', category: 'dev' },
-    { id: 'hash-generator', name: '🔐 Hash Generator', category: 'dev' }
+    { id: 'base64-tool', name: '🔐 Base64 Tool', category: 'dev' }
 ];
 
 // Unit conversion data
