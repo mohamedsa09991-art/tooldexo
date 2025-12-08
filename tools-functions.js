@@ -1,117 +1,119 @@
 // ============================================
-// COMPLETE TOOLS FUNCTIONS
-// Extracted from original index.html
+// COMPLETE TOOLS FUNCTIONS - FIXED VERSION
+// All DOM access moved to initialization
 // ============================================
 
-        // Tool definitions
-        const tools = [
-            { id: 'word-counter', name: '📝 Word Counter', category: 'text' },
-            { id: 'case-converter', name: '🔤 Case Converter', category: 'text' },
-            { id: 'percentage-calc', name: '📊 Percentage Calc', category: 'calc' },
-            { id: 'unit-converter', name: '📏 Unit Converter', category: 'converter' },
-            { id: 'age-calculator', name: '🎂 Age Calculator', category: 'calc' },
-            { id: 'password-generator', name: '🔐 Password Gen', category: 'generator' },
-            { id: 'qr-generator', name: '📱 QR Generator', category: 'generator' },
-            { id: 'color-picker', name: '🎨 Color Picker', category: 'generator' },
-            { id: 'text-diff', name: '🔍 Text Compare', category: 'text' },
-            { id: 'lorem-ipsum', name: '📄 Lorem Ipsum', category: 'generator' },
-            { id: 'bmi-calculator', name: '⚖️ BMI Calculator', category: 'calc' },
-            { id: 'tip-calculator', name: '💰 Tip Calculator', category: 'calc' },
-            { id: 'loan-calculator', name: '🏦 Loan Calculator', category: 'calc' },
-            { id: 'timezone-converter', name: '🌍 Timezone Conv', category: 'converter' },
-            { id: 'markdown-editor', name: '📝 Markdown Editor', category: 'text' },
-            { id: 'json-formatter', name: '{ } JSON Formatter', category: 'dev' },
-            { id: 'base64-tool', name: '🔐 Base64 Tool', category: 'dev' },
-            { id: 'currency-converter', name: '💱 Currency Conv', category: 'converter' },
-            { id: 'image-resizer', name: '🖼️ Image Resizer', category: 'converter' },
-            { id: 'calorie-calculator', name: '🔥 Calorie Calculator', category: 'calc' },
-            { id: 'mortgage-calculator', name: '🏠 Mortgage Calc', category: 'calc' },
-            { id: 'tax-calculator', name: '💵 Tax Calculator', category: 'calc' },
-            { id: 'grade-calculator', name: '🎓 Grade Calculator', category: 'calc' },
-            { id: 'date-calculator', name: '📅 Date Calculator', category: 'calc' },
-            { id: 'random-number', name: '🎲 Random Number', category: 'generator' },
-            { id: 'filesize-converter', name: '💾 File Size Conv', category: 'converter' },
-            { id: 'character-counter', name: '🔢 Char Counter', category: 'text' },
-            { id: 'compound-interest', name: '📈 Compound Interest', category: 'calc' }
-        ];
+// Tool definitions
+const tools = [
+    { id: 'word-counter', name: '📝 Word Counter', category: 'text' },
+    { id: 'case-converter', name: '🔤 Case Converter', category: 'text' },
+    { id: 'percentage-calc', name: '📊 Percentage Calc', category: 'calc' },
+    { id: 'unit-converter', name: '📏 Unit Converter', category: 'converter' },
+    { id: 'age-calculator', name: '🎂 Age Calculator', category: 'calc' },
+    { id: 'password-generator', name: '🔐 Password Gen', category: 'generator' },
+    { id: 'qr-generator', name: '📱 QR Generator', category: 'generator' },
+    { id: 'color-picker', name: '🎨 Color Picker', category: 'generator' },
+    { id: 'text-diff', name: '🔍 Text Compare', category: 'text' },
+    { id: 'lorem-ipsum', name: '📄 Lorem Ipsum', category: 'generator' },
+    { id: 'bmi-calculator', name: '⚖️ BMI Calculator', category: 'calc' },
+    { id: 'tip-calculator', name: '💰 Tip Calculator', category: 'calc' },
+    { id: 'loan-calculator', name: '🏦 Loan Calculator', category: 'calc' },
+    { id: 'timezone-converter', name: '🌍 Timezone Conv', category: 'converter' },
+    { id: 'markdown-editor', name: '📝 Markdown Editor', category: 'text' },
+    { id: 'json-formatter', name: '{ } JSON Formatter', category: 'dev' },
+    { id: 'base64-tool', name: '🔐 Base64 Tool', category: 'dev' },
+    { id: 'currency-converter', name: '💱 Currency Conv', category: 'converter' },
+    { id: 'image-resizer', name: '🖼️ Image Resizer', category: 'converter' },
+    { id: 'calorie-calculator', name: '🔥 Calorie Calculator', category: 'calc' },
+    { id: 'mortgage-calculator', name: '🏠 Mortgage Calc', category: 'calc' },
+    { id: 'tax-calculator', name: '💵 Tax Calculator', category: 'calc' },
+    { id: 'grade-calculator', name: '🎓 Grade Calculator', category: 'calc' },
+    { id: 'date-calculator', name: '📅 Date Calculator', category: 'calc' },
+    { id: 'random-number', name: '🎲 Random Number', category: 'generator' },
+    { id: 'filesize-converter', name: '💾 File Size Conv', category: 'converter' },
+    { id: 'character-counter', name: '🔢 Char Counter', category: 'text' },
+    { id: 'compound-interest', name: '📈 Compound Interest', category: 'calc' }
+];
 
-        // Populate tool buttons
-        function populateToolButtons() {
-            const container = document.getElementById('toolButtons');
-            tools.forEach((tool, index) => {
-                const btn = document.createElement('button');
-                btn.textContent = tool.name;
-                btn.className = index === 0 ? 'active' : '';
-                btn.onclick = function() { showTool(tool.id, this); };
-                btn.dataset.category = tool.category;
-                container.appendChild(btn);
-            });
+// Populate tool buttons
+function populateToolButtons() {
+    const container = document.getElementById('toolButtons');
+    if (!container) return;
+    
+    tools.forEach((tool, index) => {
+        const btn = document.createElement('button');
+        btn.textContent = tool.name;
+        btn.className = index === 0 ? 'active' : '';
+        btn.onclick = function() { showTool(tool.id, this); };
+        btn.dataset.category = tool.category;
+        container.appendChild(btn);
+    });
+}
+
+// Filter tools by category
+function filterTools(category) {
+    const buttons = document.querySelectorAll('.tool-nav button');
+    const categoryBtns = document.querySelectorAll('.category-btn');
+    
+    categoryBtns.forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.textContent.includes(category) || category === 'all') {
+            btn.classList.add('active');
         }
-
-        // Filter tools by category
-        function filterTools(category) {
-            const buttons = document.querySelectorAll('.tool-nav button');
-            const categoryBtns = document.querySelectorAll('.category-btn');
-            
-            categoryBtns.forEach(btn => {
-                btn.classList.remove('active');
-                if (btn.textContent.includes(category) || category === 'all') {
-                    btn.classList.add('active');
-                }
-            });
-            
-            buttons.forEach(btn => {
-                if (category === 'all' || btn.dataset.category === category) {
-                    btn.style.display = 'block';
-                } else {
-                    btn.style.display = 'none';
-                }
-            });
+    });
+    
+    buttons.forEach(btn => {
+        if (category === 'all' || btn.dataset.category === category) {
+            btn.style.display = 'block';
+        } else {
+            btn.style.display = 'none';
         }
+    });
+}
 
-        // Tool Navigation
-        function showTool(toolId, buttonElement) {
-            // Hide all tools
-            document.querySelectorAll('.tool-card').forEach(card => card.classList.remove('active'));
-            document.querySelectorAll('.tool-nav button').forEach(btn => btn.classList.remove('active'));
-            
-            // Show selected tool
-            const toolCard = document.getElementById(toolId);
-            if (toolCard) {
-                toolCard.classList.add('active');
-            }
-            
-            // Highlight button if provided
-            if (buttonElement) {
-                buttonElement.classList.add('active');
-            }
-            
-            // Scroll to tool
-            if (toolCard) {
-                toolCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        }
+// Tool Navigation
+function showTool(toolId, buttonElement) {
+    // Hide all tools
+    document.querySelectorAll('.tool-card').forEach(card => card.classList.remove('active'));
+    document.querySelectorAll('.tool-nav button').forEach(btn => btn.classList.remove('active'));
+    
+    // Show selected tool
+    const toolCard = document.getElementById(toolId);
+    if (toolCard) {
+        toolCard.classList.add('active');
+    }
+    
+    // Highlight button if provided
+    if (buttonElement) {
+        buttonElement.classList.add('active');
+    }
+    
+    // Scroll to tool
+    if (toolCard) {
+        toolCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+}
 
-        // TOOL 1: Word Counter
-        const wordCountText = document.getElementById('wordCountText');
-        wordCountText.addEventListener('input', updateWordCount);
+// TOOL 1: Word Counter - FIXED: event listener added in initializeWordCounter()
+function updateWordCount() {
+    const wordCountText = document.getElementById('wordCountText');
+    if (!wordCountText) return;
+    
+    const text = wordCountText.value;
+    const words = text.trim().split(/\s+/).filter(word => word.length > 0);
+    const chars = text.length;
+    const charsNoSpace = text.replace(/\s/g, '').length;
+    const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0).length;
+    const paragraphs = text.split(/\n+/).filter(p => p.trim().length > 0).length;
+    const readingTime = Math.ceil(words.length / 200);
 
-        function updateWordCount() {
-            const text = wordCountText.value;
-            const words = text.trim().split(/\s+/).filter(word => word.length > 0);
-            const chars = text.length;
-            const charsNoSpace = text.replace(/\s/g, '').length;
-            const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0).length;
-            const paragraphs = text.split(/\n+/).filter(p => p.trim().length > 0).length;
-            const readingTime = Math.ceil(words.length / 200);
-
-            document.getElementById('wordCount').textContent = words.length;
-            document.getElementById('charCount').textContent = chars;
-            document.getElementById('charCountNoSpace').textContent = charsNoSpace;
-            document.getElementById('sentenceCount').textContent = sentences;
-            document.getElementById('paragraphCount').textContent = paragraphs;
-            document.getElementById('readingTime').textContent = readingTime;
-        }
+    document.getElementById('wordCount').textContent = words.length;
+    document.getElementById('charCount').textContent = chars;
+    document.getElementById('charCountNoSpace').textContent = charsNoSpace;
+    document.getElementById('sentenceCount').textContent = sentences;
+    document.getElementById('paragraphCount').textContent = paragraphs;
+    document.getElementById('readingTime').textContent = readingTime;
+}
 
         // TOOL 2: Case Converter
         function convertCase(type) {
@@ -1341,3 +1343,5 @@ Inline \`code\` uses backticks
         
 
 console.log('All tool functions loaded successfully');
+
+console.log('✅ All tool functions loaded successfully');
