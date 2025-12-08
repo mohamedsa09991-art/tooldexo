@@ -1,46 +1,15 @@
 // ============================================
 // COMPLETE TOOLS FUNCTIONS - FIXED VERSION
 // All DOM access moved to initialization
+// Tool configuration is in tools-data.js (TOOLS_CONFIG)
 // ============================================
 
-// Tool definitions
-const tools = [
-    { id: 'word-counter', name: '📝 Word Counter', category: 'text' },
-    { id: 'case-converter', name: '🔤 Case Converter', category: 'text' },
-    { id: 'percentage-calc', name: '📊 Percentage Calc', category: 'calc' },
-    { id: 'unit-converter', name: '📏 Unit Converter', category: 'converter' },
-    { id: 'age-calculator', name: '🎂 Age Calculator', category: 'calc' },
-    { id: 'password-generator', name: '🔐 Password Gen', category: 'generator' },
-    { id: 'qr-generator', name: '📱 QR Generator', category: 'generator' },
-    { id: 'color-picker', name: '🎨 Color Picker', category: 'generator' },
-    { id: 'text-diff', name: '🔍 Text Compare', category: 'text' },
-    { id: 'lorem-ipsum', name: '📄 Lorem Ipsum', category: 'generator' },
-    { id: 'bmi-calculator', name: '⚖️ BMI Calculator', category: 'calc' },
-    { id: 'tip-calculator', name: '💰 Tip Calculator', category: 'calc' },
-    { id: 'loan-calculator', name: '🏦 Loan Calculator', category: 'calc' },
-    { id: 'timezone-converter', name: '🌍 Timezone Conv', category: 'converter' },
-    { id: 'markdown-editor', name: '📝 Markdown Editor', category: 'text' },
-    { id: 'json-formatter', name: '{ } JSON Formatter', category: 'dev' },
-    { id: 'base64-tool', name: '🔐 Base64 Tool', category: 'dev' },
-    { id: 'currency-converter', name: '💱 Currency Conv', category: 'converter' },
-    { id: 'image-resizer', name: '🖼️ Image Resizer', category: 'converter' },
-    { id: 'calorie-calculator', name: '🔥 Calorie Calculator', category: 'calc' },
-    { id: 'mortgage-calculator', name: '🏠 Mortgage Calc', category: 'calc' },
-    { id: 'tax-calculator', name: '💵 Tax Calculator', category: 'calc' },
-    { id: 'grade-calculator', name: '🎓 Grade Calculator', category: 'calc' },
-    { id: 'date-calculator', name: '📅 Date Calculator', category: 'calc' },
-    { id: 'random-number', name: '🎲 Random Number', category: 'generator' },
-    { id: 'filesize-converter', name: '💾 File Size Conv', category: 'converter' },
-    { id: 'character-counter', name: '🔢 Char Counter', category: 'text' },
-    { id: 'compound-interest', name: '📈 Compound Interest', category: 'calc' }
-];
-
-// Populate tool buttons
+// Navigation functions use TOOLS_CONFIG from tools-data.js
 function populateToolButtons() {
     const container = document.getElementById('toolButtons');
     if (!container) return;
     
-    tools.forEach((tool, index) => {
+    TOOLS_CONFIG.forEach((tool, index) => {
         const btn = document.createElement('button');
         btn.textContent = tool.name;
         btn.className = index === 0 ? 'active' : '';
@@ -52,7 +21,7 @@ function populateToolButtons() {
 
 // Filter tools by category
 function filterTools(category) {
-    const buttons = document.querySelectorAll('.tool-nav button');
+    const buttons = document.querySelectorAll('.tool-nav-buttons button');
     const categoryBtns = document.querySelectorAll('.category-btn');
     
     categoryBtns.forEach(btn => {
@@ -75,7 +44,7 @@ function filterTools(category) {
 function showTool(toolId, buttonElement) {
     // Hide all tools
     document.querySelectorAll('.tool-card').forEach(card => card.classList.remove('active'));
-    document.querySelectorAll('.tool-nav button').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.tool-nav-buttons button').forEach(btn => btn.classList.remove('active'));
     
     // Show selected tool
     const toolCard = document.getElementById(toolId);
@@ -94,7 +63,7 @@ function showTool(toolId, buttonElement) {
     }
 }
 
-// TOOL 1: Word Counter - FIXED: event listener added in initializeWordCounter()
+// TOOL 1: Word Counter
 function updateWordCount() {
     const wordCountText = document.getElementById('wordCountText');
     if (!wordCountText) return;
@@ -113,6 +82,8 @@ function updateWordCount() {
     document.getElementById('sentenceCount').textContent = sentences;
     document.getElementById('paragraphCount').textContent = paragraphs;
     document.getElementById('readingTime').textContent = readingTime;
+}
+
 }
 
         // TOOL 2: Case Converter
@@ -1343,5 +1314,7 @@ Inline \`code\` uses backticks
         
 
 console.log('All tool functions loaded successfully');
+
+console.log('✅ All tool functions loaded successfully');
 
 console.log('✅ All tool functions loaded successfully');
