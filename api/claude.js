@@ -10,7 +10,7 @@ const supabase = createClient(
 );
 
 const ANTHROPIC_API = 'https://api.anthropic.com/v1/messages';
-const FREE_LIMIT    = 5;   // parses per month on free plan
+const FREE_LIMIT    = 5;
 const APP_URL       = process.env.APP_URL || 'https://tooldexo.com';
 
 export default async function handler(req, res) {
@@ -22,7 +22,7 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   try {
-    // ── 1. Extract + validate session token ──────────────────
+    // ── 1. Extract session token ──────────────────────────────
     const authHeader = req.headers.authorization || '';
     const sessionToken = authHeader.replace(/^Bearer\s+/i, '').trim();
 
@@ -30,10 +30,10 @@ export default async function handler(req, res) {
       return res.status(401).json({ error: 'No session token. Please log in.' });
     }
 
-    // ── 2. Look up session + user in one join ─────────────────
+    // ── 2. Look up session ────────────────────────────────────
     const { data: session, error: sessionErr } = await supabase
       .from('sessions')
-      .select('id, user_id, last_used_at, users(id, plan)')
+      .select('id, user_id, last_used_at')
       .eq('session_token', sessionToken)
       .single();
 
@@ -41,12 +41,22 @@ export default async function handler(req, res) {
       return res.status(401).json({ error: 'Session expired or invalid. Please log in again.' });
     }
 
-    const user = session.users;
+    // ── 3. Look up user separately ────────────────────────────
+    const { data: user, error: userErr } = await supabase
+      .from('users')
+      .select('id, plan')
+      .eq('id', session.user_id)
+      .single();
+
+    if (userErr || !user) {
+      return res.status(401).json({ error: 'User not found. Please log in again.' });
+    }
+
     const isPro = user.plan === 'pro';
 
-    // ── 3. Check usage limit (free users only) ─────────────────
+    // ── 4. Check usage limit (free users only) ─────────────────
     if (!isPro) {
-      const { data: usageData, error: usageErr } = await supabase
+      const { count, error: usageErr } = await supabase
         .from('usage_log')
         .select('id', { count: 'exact', head: true })
         .eq('user_id', user.id)
@@ -57,7 +67,7 @@ export default async function handler(req, res) {
         return res.status(500).json({ error: 'Could not check usage' });
       }
 
-      const used = usageData?.length ?? 0;
+      const used = count ?? 0;
 
       if (used >= FREE_LIMIT) {
         return res.status(402).json({
@@ -69,19 +79,19 @@ export default async function handler(req, res) {
       }
     }
 
-    // ── 4. Forward request to Anthropic ───────────────────────
-    // We only pass through safe fields — never let the client override model or system
+    // ── 5. Validate request body ──────────────────────────────
     const { messages, model, max_tokens, system } = req.body;
 
     if (!messages || !Array.isArray(messages)) {
       return res.status(400).json({ error: 'Invalid request body' });
     }
 
+    // ── 6. Forward to Anthropic ───────────────────────────────
     const anthropicRes = await fetch(ANTHROPIC_API, {
       method: 'POST',
       headers: {
-        'Content-Type':    'application/json',
-        'x-api-key':       process.env.ANTHROPIC_API_KEY,
+        'Content-Type':      'application/json',
+        'x-api-key':         process.env.ANTHROPIC_API_KEY,
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
@@ -101,15 +111,13 @@ export default async function handler(req, res) {
       });
     }
 
-    // ── 5. Log usage ──────────────────────────────────────────
+    // ── 7. Log usage + update session ─────────────────────────
     await Promise.all([
-      // Log the parse action
       supabase.from('usage_log').insert({ user_id: user.id, action: 'parse' }),
-      // Update session last_used_at
       supabase.from('sessions').update({ last_used_at: new Date().toISOString() }).eq('id', session.id)
     ]);
 
-    // ── 6. Return response + usage metadata to client ─────────
+    // ── 8. Return response + usage metadata ───────────────────
     const usedAfter = isPro ? null : await getMonthlyUsage(user.id);
 
     return res.status(200).json({
@@ -127,7 +135,7 @@ export default async function handler(req, res) {
   }
 }
 
-// ── Helpers ──────────────────────────────────────────────────────────────────
+// ── Helpers ───────────────────────────────────────────────────────────────────
 function getMonthStart() {
   const now = new Date();
   return new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
