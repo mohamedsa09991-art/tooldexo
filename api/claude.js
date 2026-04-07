@@ -130,8 +130,8 @@ export default async function handler(req, res) {
     });
 
   } catch (err) {
-    console.error('[claude] Unhandled error:', err);
-    return res.status(500).json({ error: 'Internal server error' });
+    console.error('[claude] Unhandled error:', err?.message || err);
+    return res.status(500).json({ error: err?.message || 'Internal server error' });
   }
 }
 
