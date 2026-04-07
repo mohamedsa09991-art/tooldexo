@@ -146,7 +146,7 @@ async function handleVerifyToken(req, res) {
 
   // Redirect browser to frontend with the session token in the URL fragment
   // The fragment (#) is never sent to the server — safe to carry the token this way
-  return res.redirect(302, `${APP_URL}/#verified=${newSessionToken}`);
+  return res.redirect(302, `${APP_URL}/app#verified=${newSessionToken}`);
 }
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
@@ -155,7 +155,7 @@ function isValidEmail(email) {
 }
 
 function redirectWithError(res, msg) {
-  return res.redirect(302, `${APP_URL}/#auth-error=${encodeURIComponent(msg)}`);
+  return res.redirect(302, `${APP_URL}/app#auth-error=${encodeURIComponent(msg)}`);
 }
 
 function buildEmailHtml(link, ttl) {
