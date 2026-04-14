@@ -146,7 +146,7 @@ async function handleVerifyToken(req, res) {
 
   // Redirect browser to frontend with the session token in the URL fragment
   // The fragment (#) is never sent to the server — safe to carry the token this way
-  return res.redirect(302, `${APP_URL}/app#verified=${newSessionToken}`);
+  return res.redirect(302, `${APP_URL}/app#confirm=${token}`);
 }
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
