@@ -27,7 +27,7 @@
   --text:#f0eeff;
   --text2:#9896b8;
   --text3:#4a4868;
-  --green:#10b981;
+  --green:#10b981;--orange:#f97316;--orange-bg:rgba(249,115,22,0.1);--orange-bd:rgba(249,115,22,0.3);
   --green-bg:rgba(16,185,129,0.1);
   --green-bd:rgba(16,185,129,0.2);
   --amber:#f59e0b;
@@ -351,6 +351,88 @@ textarea.task:focus{border-color:rgba(102,126,234,0.45);box-shadow:0 0 0 3px rgb
 /* TOAST */
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--purple),var(--purple2));color:#fff;font-size:13px;font-weight:600;padding:9px 20px;border-radius:20px;opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap;z-index:9999;font-family:'DM Sans',sans-serif;box-shadow:0 4px 16px rgba(102,126,234,0.4)}
 .toast.show{opacity:1}
+
+/* Phase 2 — complexity toggle */
+.complexity-row{display:flex;gap:6px;margin-top:8px}
+.cx-btn{flex:1;padding:7px;font-size:11.5px;font-weight:600;font-family:'DM Sans',sans-serif;border-radius:7px;border:1px solid var(--border2);background:rgba(255,255,255,0.03);color:var(--text3);cursor:pointer;transition:all .13s;text-align:center}
+.cx-btn:hover{color:var(--text2);border-color:var(--border3)}
+.cx-btn.active{background:var(--purple-bg);border-color:var(--purple-bd);color:var(--purple-l)}
+/* Phase 2 — make production-ready button */
+.btn-production{width:100%;margin-top:8px;padding:10px;background:none;border:1px solid var(--orange-bd,rgba(249,115,22,0.3));border-radius:8px;color:var(--orange,#f97316);font-family:'DM Sans',sans-serif;font-size:12.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .13s}
+.btn-production:hover{background:rgba(249,115,22,0.1);border-color:rgba(249,115,22,0.5)}
+.btn-production:disabled{opacity:.4;cursor:default}
+/* Phase 2 — refinement box */
+.refine-panel{background:var(--bg2);border:1px solid var(--purple-bd);border-radius:12px;overflow:hidden;animation:fadeUp .3s ease}
+.refine-head{padding:10px 15px;background:var(--purple-bg);border-bottom:1px solid var(--purple-bd);display:flex;align-items:center;gap:8px}
+.refine-head-title{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--purple-l)}
+.refine-body{padding:12px 15px;display:flex;flex-direction:column;gap:8px}
+.refine-input{width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--border2);border-radius:8px;padding:10px 13px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;line-height:1.55;resize:none;height:72px;outline:none;transition:border-color .15s}
+.refine-input::placeholder{color:var(--text3)}
+.refine-input:focus{border-color:rgba(102,126,234,0.45)}
+.btn-refine{padding:9px 18px;background:var(--purple-bg);border:1px solid var(--purple-bd);border-radius:7px;color:var(--purple-l);font-size:12.5px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .13s;display:flex;align-items:center;gap:6px}
+.btn-refine:hover{background:rgba(102,126,234,0.18)}
+.btn-refine:disabled{opacity:.4;cursor:default}
+/* Phase 4 — considerations */
+.considerations{background:var(--bg2);border:1px solid var(--amber-bd);border-radius:12px;overflow:hidden;animation:fadeUp .3s ease}
+.consider-head{padding:10px 15px;background:var(--amber-bg);border-bottom:1px solid var(--amber-bd);display:flex;align-items:center;gap:8px}
+.consider-head-title{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--amber)}
+.consider-body{padding:12px 15px;display:flex;flex-direction:column;gap:7px}
+.consider-item{display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--text2);line-height:1.55}
+.consider-dot{width:5px;height:5px;border-radius:50%;background:var(--amber);flex-shrink:0;margin-top:6px}
+/* Phase 5 — credential helper */
+.cred-panel{background:var(--bg2);border:1px solid var(--green-bd);border-radius:12px;overflow:hidden;animation:fadeUp .3s ease}
+.cred-head{padding:10px 15px;background:var(--green-bg);border-bottom:1px solid var(--green-bd);display:flex;align-items:center;gap:8px}
+.cred-head-title{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--green)}
+.cred-body{padding:12px 15px;display:flex;flex-direction:column;gap:8px}
+.cred-item{display:flex;align-items:flex-start;gap:10px}
+.cred-icon{width:28px;height:28px;border-radius:6px;background:var(--green-bg);border:1px solid var(--green-bd);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px}
+.cred-name{font-size:12.5px;font-weight:600;color:var(--text)}
+.cred-where{font-size:11px;color:var(--text3);font-family:'IBM Plex Mono',monospace;margin-top:1px}
+/* Phase 3 — debug tab */
+.debug-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:720px){.debug-grid{grid-template-columns:1fr}}
+textarea.debug-input{width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--border2);border-radius:8px;padding:11px 13px;color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.6;resize:none;height:130px;outline:none;transition:border-color .15s}
+textarea.debug-input::placeholder{color:var(--text3)}
+textarea.debug-input:focus{border-color:rgba(239,68,68,0.4)}
+.debug-plat-sel,.translate-sel{width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--border2);border-radius:8px;padding:10px 13px;color:var(--text2);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;cursor:pointer;margin-bottom:10px}
+.debug-plat-sel option,.translate-sel option{background:#16161f}
+.btn-debug{width:100%;margin-top:10px;padding:12px;background:linear-gradient(135deg,#ef4444,#dc2626);border:none;border-radius:8px;color:#fff;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .15s;box-shadow:0 4px 16px rgba(239,68,68,0.3)}
+.btn-debug:hover{transform:translateY(-1px)}
+.btn-debug:disabled{opacity:.4;cursor:default;transform:none}
+.debug-result{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;animation:fadeUp .3s ease}
+.debug-result-head{padding:12px 15px;border-bottom:1px solid var(--border);background:rgba(239,68,68,0.06)}
+.debug-result-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:var(--red-t)}
+.debug-section{padding:12px 15px;border-bottom:1px solid var(--border)}
+.debug-section:last-child{border-bottom:none}
+.debug-section-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;font-family:'IBM Plex Mono',monospace}
+.debug-text{font-size:13px;color:var(--text2);line-height:1.7}
+.debug-code{background:rgba(0,0,0,0.4);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text2);line-height:1.7;margin-top:6px;white-space:pre-wrap;word-break:break-all}
+/* Phase 6 — translate tab */
+.translate-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:720px){.translate-grid{grid-template-columns:1fr}}
+.plat-sel-row{display:flex;gap:10px;align-items:center;margin-bottom:10px}
+.plat-sel-row select{flex:1;background:rgba(255,255,255,0.04);border:1px solid var(--border2);border-radius:8px;padding:9px 12px;color:var(--text2);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;cursor:pointer}
+.plat-sel-row select option{background:#16161f}
+.plat-sel-arrow{color:var(--text3);font-size:16px;flex-shrink:0}
+textarea.translate-input{width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--border2);border-radius:8px;padding:11px 13px;color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.6;resize:none;height:160px;outline:none;transition:border-color .15s}
+textarea.translate-input::placeholder{color:var(--text3)}
+textarea.translate-input:focus{border-color:rgba(102,126,234,0.45)}
+.btn-translate{width:100%;margin-top:10px;padding:12px;background:linear-gradient(135deg,var(--purple),var(--purple2));border:none;border-radius:8px;color:#fff;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .15s;box-shadow:0 4px 16px rgba(102,126,234,0.3)}
+.btn-translate:hover{transform:translateY(-1px)}
+.btn-translate:disabled{opacity:.4;cursor:default;transform:none}
+.flag-item{background:var(--amber-bg);border:1px solid var(--amber-bd);border-radius:8px;padding:9px 12px;font-size:12.5px;color:rgba(245,158,11,.8);margin-bottom:6px;line-height:1.5}
+.flag-item strong{color:var(--amber);display:block;font-size:10px;letter-spacing:.05em;text-transform:uppercase;margin-bottom:2px}
+
+/* OAuth buttons */
+.oauth-btns{display:flex;flex-direction:column;gap:8px;margin-bottom:4px}
+.oauth-btn{width:100%;padding:11px 16px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:9px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13.5px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:11px;transition:all .15s;text-align:left}
+.oauth-btn:hover{background:rgba(255,255,255,0.09);border-color:rgba(255,255,255,0.2)}
+.oauth-btn:disabled{opacity:.45;cursor:default}
+.oauth-btn-icon{width:20px;height:20px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.oauth-btn-text{flex:1}
+.divider-row{display:flex;align-items:center;gap:12px;margin:4px 0}
+.divider-line{flex:1;height:1px;background:rgba(255,255,255,0.08)}
+.divider-txt{font-size:11px;color:var(--text3);font-family:'DM Sans',sans-serif;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -365,10 +447,39 @@ textarea.task:focus{border-color:rgba(102,126,234,0.45);box-shadow:0 0 0 3px rgb
           <span class="login-logo-text">Tooldexo</span>
         </div>
         <div class="login-title">Sign in to continue</div>
-        <div class="login-sub">Enter your email — we'll send a magic link. No password ever.</div>
+        <div class="login-sub">Sign in with your preferred account or use a magic link. No password required.</div>
       </div>
       <div class="login-body">
         <div id="login-err" class="err-box" style="display:none"></div>
+
+        <!-- OAuth buttons -->
+        <div class="oauth-btns">
+          <button class="oauth-btn" onclick="oauthLogin('google')">
+            <span class="oauth-btn-icon">
+              <svg viewBox="0 0 20 20" width="18" height="18"><path d="M19.6 10.23c0-.68-.06-1.36-.17-2H10v3.79h5.4a4.62 4.62 0 01-2 3.03v2.52h3.24c1.9-1.75 3-4.33 3-7.34z" fill="#4285F4"/><path d="M10 20c2.7 0 4.97-.9 6.62-2.43l-3.24-2.52c-.9.6-2.05.96-3.38.96-2.6 0-4.8-1.76-5.59-4.12H1.07v2.6A10 10 0 0010 20z" fill="#34A853"/><path d="M4.41 11.89A6 6 0 014.1 10c0-.65.11-1.29.3-1.89V5.51H1.07A10 10 0 000 10c0 1.61.38 3.13 1.07 4.49l3.34-2.6z" fill="#FBBC05"/><path d="M10 3.96c1.47 0 2.79.51 3.83 1.5l2.87-2.87C14.97.99 12.7 0 10 0A10 10 0 001.07 5.51l3.34 2.6C5.2 5.72 7.4 3.96 10 3.96z" fill="#EA4335"/></svg>
+            </span>
+            <span class="oauth-btn-text">Continue with Google</span>
+          </button>
+          <button class="oauth-btn" onclick="oauthLogin('azure')">
+            <span class="oauth-btn-icon">
+              <svg viewBox="0 0 20 20" width="18" height="18"><path d="M9.39 2L4 11.03l2.62 4.45L11.5 7.1 9.39 2z" fill="#0078D4"/><path d="M10.89 3.5l3.61 6.21H18L12.26 18H7.14l3.75-6.5-3.27-5.63 3.27-2.37z" fill="#50A1E5"/></svg>
+            </span>
+            <span class="oauth-btn-text">Continue with Microsoft</span>
+          </button>
+          <button class="oauth-btn" onclick="oauthLogin('github')">
+            <span class="oauth-btn-icon">
+              <svg viewBox="0 0 20 20" width="18" height="18" fill="currentColor"><path fill-rule="evenodd" d="M10 0C4.477 0 0 4.477 0 10c0 4.418 2.865 8.166 6.839 9.489.5.09.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.607.069-.607 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.03-2.682-.103-.253-.447-1.27.097-2.646 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0110 4.836c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.376.202 2.394.1 2.646.64.698 1.028 1.591 1.028 2.682 0 3.841-2.337 4.687-4.565 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.744 0 .267.18.577.688.48C17.138 18.163 20 14.418 20 10c0-5.523-4.477-10-10-10z" clip-rule="evenodd"/></svg>
+            </span>
+            <span class="oauth-btn-text">Continue with GitHub</span>
+          </button>
+        </div>
+
+        <div class="divider-row">
+          <div class="divider-line"></div>
+          <span class="divider-txt">or sign in with email</span>
+          <div class="divider-line"></div>
+        </div>
+
         <div id="email-state">
           <div class="field-label">Email address</div>
           <input class="field-input" id="emailInput" type="email" placeholder="you@example.com" autocomplete="email"/>
@@ -413,7 +524,9 @@ textarea.task:focus{border-color:rgba(102,126,234,0.45);box-shadow:0 0 0 3px rgb
     <button class="tnav-btn active" onclick="switchTab('parse')" id="tnav-parse">M1 · Parse</button>
     <button class="tnav-btn" onclick="switchTab('flow')" id="tnav-flow">M2 · Flowchart</button>
     <button class="tnav-btn" onclick="switchTab('export')" id="tnav-export">M3 · Export</button>
-    <button class="tnav-btn" onclick="switchTab('library')" id="tnav-library">M4 · Library<span class="tnav-badge" id="libBadge" style="display:none">0</span></button>
+    <button class="tnav-btn" onclick="switchTab('debug')" id="tnav-debug">M4 · Debug</button>
+    <button class="tnav-btn" onclick="switchTab('translate')" id="tnav-translate">M5 · Translate</button>
+    <button class="tnav-btn" onclick="switchTab('library')" id="tnav-library">M6 · Library<span class="tnav-badge" id="libBadge" style="display:none">0</span></button>
   </div>
 
   <div class="app-content">
@@ -421,23 +534,47 @@ textarea.task:focus{border-color:rgba(102,126,234,0.45);box-shadow:0 0 0 3px rgb
     <!-- M1 -->
     <div class="tab-panel active" id="panel-parse">
       <div class="parse-grid">
-        <div class="panel-card">
-          <div class="card-head"><span class="card-title">Describe your workflow</span></div>
-          <div class="card-body">
-            <textarea class="task" id="taskIn" placeholder="e.g. Every time a new lead fills my Typeform, score them with AI, add to HubSpot, ping Slack, then send a proposal email…"></textarea>
-            <div class="examples">
-              <span class="ex" onclick="useEx(this)">New lead → CRM + Slack + email</span>
-              <span class="ex" onclick="useEx(this)">Invoice paid → sheet + receipt + notify</span>
-              <span class="ex" onclick="useEx(this)">Form submit → qualify + Notion + follow-up</span>
-              <span class="ex" onclick="useEx(this)">Weekly → fetch data + summarise + report</span>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="panel-card">
+            <div class="card-head"><span class="card-title">Describe your workflow</span></div>
+            <div class="card-body">
+              <textarea class="task" id="taskIn" placeholder="e.g. Every time a new lead fills my Typeform, score them with AI, add to HubSpot, ping Slack, then send a proposal email…"></textarea>
+              <div style="font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text3);margin-top:10px;margin-bottom:6px">Output mode</div>
+              <div class="complexity-row">
+                <button class="cx-btn active" id="cx-draft" onclick="setCx('draft')">⚡ Quick Draft</button>
+                <button class="cx-btn" id="cx-prod" onclick="setCx('prod')">🛡️ Production Ready</button>
+              </div>
+              <div class="examples" style="margin-top:10px">
+                <span class="ex" onclick="useEx(this)">New lead → CRM + Slack + email</span>
+                <span class="ex" onclick="useEx(this)">Invoice paid → sheet + receipt + notify</span>
+                <span class="ex" onclick="useEx(this)">Form submit → qualify + Notion + follow-up</span>
+                <span class="ex" onclick="useEx(this)">Weekly → fetch data + summarise + report</span>
+              </div>
+              <button class="btn-parse" id="parseBtn" onclick="runParse()">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1L8 4.5H12L9.5 6.5L10.5 10L6.5 8L2.5 10L3.5 6.5L1 4.5H5L6.5 1Z" fill="white" opacity="0.9"/></svg>
+                Parse workflow
+              </button>
+              <div id="parseErr" class="err-inline" style="display:none;margin-top:10px"></div>
             </div>
-            <button class="btn-parse" id="parseBtn" onclick="runParse()">
-              <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1L8 4.5H12L9.5 6.5L10.5 10L6.5 8L2.5 10L3.5 6.5L1 4.5H5L6.5 1Z" fill="white" opacity="0.9"/></svg>
-              Parse workflow
-            </button>
-            <div id="parseErr" class="err-inline" style="display:none;margin-top:10px"></div>
+          </div>
+          <!-- Refinement box Phase 2.1 -->
+          <div class="refine-panel" id="refinePanel" style="display:none">
+            <div class="refine-head">
+              <span class="refine-head-title">✏ Refine this workflow</span>
+            </div>
+            <div class="refine-body">
+              <textarea class="refine-input" id="refineInput" placeholder="Something not right? e.g. 'Add error handling', 'Use Airtable instead of Google Sheets', 'Make the Slack message conditional'"></textarea>
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <button class="btn-refine" id="refineBtn" onclick="runRefine()">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 6h10M7 2l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  Apply refinement
+                </button>
+                <button class="btn-production" id="prodBtn" onclick="makeProdReady()">🛡️ Make production-ready</button>
+              </div>
+            </div>
           </div>
         </div>
+        <div style="display:flex;flex-direction:column;gap:10px">
         <div id="resultWrap" style="display:none" class="result-card">
           <div class="rc-head">
             <div><div class="rc-name" id="rcName">—</div><div class="rc-desc" id="rcDesc">—</div></div>
@@ -453,6 +590,17 @@ textarea.task:focus{border-color:rgba(102,126,234,0.45);box-shadow:0 0 0 3px rgb
             <div class="foot-item">Tools: <span id="fTools">—</span></div>
             <div class="foot-item">Steps: <span id="fSteps">—</span></div>
           </div>
+        </div>
+        <!-- Phase 4 — Considerations -->
+        <div class="considerations" id="considerPanel" style="display:none">
+          <div class="consider-head"><span class="consider-head-title">⚠ Considerations</span></div>
+          <div class="consider-body" id="considerBody"></div>
+        </div>
+        <!-- Phase 5 — Credential helper -->
+        <div class="cred-panel" id="credPanel" style="display:none">
+          <div class="cred-head"><span class="cred-head-title">🔑 Credentials you'll need</span></div>
+          <div class="cred-body" id="credBody"></div>
+        </div>
         </div>
       </div>
     </div>
@@ -523,7 +671,101 @@ textarea.task:focus{border-color:rgba(102,126,234,0.45);box-shadow:0 0 0 3px rgb
       </div>
     </div>
 
-    <!-- M4 -->
+    <!-- M4 DEBUG Phase 3 -->
+    <div class="tab-panel" id="panel-debug">
+      <div class="debug-grid">
+        <div>
+          <div class="panel-card">
+            <div class="card-head"><span class="card-title">Debug a workflow error</span></div>
+            <div class="card-body">
+              <select class="debug-plat-sel" id="debugPlatSel">
+                <option value="n8n">n8n</option>
+                <option value="make">Make.com</option>
+                <option value="zapier">Zapier</option>
+                <option value="google">Google Cloud Workflows</option>
+                <option value="powerautomate">Power Automate</option>
+                <option value="eventbridge">Amazon EventBridge</option>
+              </select>
+              <div class="field-label" style="margin-bottom:6px">Error message</div>
+              <textarea class="debug-input" id="debugError" placeholder="Paste your error message here…&#10;&#10;e.g. Error: ECONNREFUSED&#10;or: 401 Unauthorized&#10;or: Cannot read properties of undefined"></textarea>
+              <div class="field-label" style="margin-top:10px;margin-bottom:6px">Workflow JSON (optional — for context-aware diagnosis)</div>
+              <textarea class="debug-input" id="debugJSON" placeholder="Paste your workflow JSON for more specific diagnosis…" style="height:90px"></textarea>
+              <button class="btn-debug" id="debugBtn" onclick="runDebug()">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="white" stroke-width="1.3" fill="none"/><path d="M6.5 4v3M6.5 8.5v.5" stroke="white" stroke-width="1.3" stroke-linecap="round"/></svg>
+                Diagnose error
+              </button>
+              <div id="debugErr" class="err-inline" style="display:none;margin-top:10px"></div>
+            </div>
+          </div>
+        </div>
+        <div id="debugResultWrap" style="display:none">
+          <div class="debug-result">
+            <div class="debug-result-head"><div class="debug-result-title" id="debugResultTitle">Diagnosis</div></div>
+            <div class="debug-section"><div class="debug-section-label">Root cause</div><div class="debug-text" id="debugCause">—</div></div>
+            <div class="debug-section"><div class="debug-section-label">Plain English explanation</div><div class="debug-text" id="debugExplain">—</div></div>
+            <div class="debug-section"><div class="debug-section-label">The fix</div><div class="debug-text" id="debugFix">—</div><div class="debug-code" id="debugCode" style="display:none"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- M5 TRANSLATE Phase 6 -->
+    <div class="tab-panel" id="panel-translate">
+      <div class="translate-grid">
+        <div>
+          <div class="panel-card">
+            <div class="card-head"><span class="card-title">Translate between platforms</span></div>
+            <div class="card-body">
+              <div class="plat-sel-row">
+                <select id="translateFrom">
+                  <option value="n8n">n8n</option>
+                  <option value="make">Make.com</option>
+                  <option value="zapier">Zapier</option>
+                  <option value="google">Google Workflows</option>
+                  <option value="powerautomate">Power Automate</option>
+                  <option value="eventbridge">EventBridge</option>
+                </select>
+                <span class="plat-sel-arrow">→</span>
+                <select id="translateTo">
+                  <option value="make">Make.com</option>
+                  <option value="n8n">n8n</option>
+                  <option value="zapier">Zapier</option>
+                  <option value="google">Google Workflows</option>
+                  <option value="powerautomate">Power Automate</option>
+                  <option value="eventbridge">EventBridge</option>
+                </select>
+              </div>
+              <div class="field-label" style="margin-bottom:6px">Paste your workflow JSON or describe it</div>
+              <textarea class="translate-input" id="translateInput" placeholder="Paste your existing workflow JSON here…&#10;&#10;Or describe the workflow in plain English."></textarea>
+              <button class="btn-translate" id="translateBtn" onclick="runTranslate()">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M1 4h8M1 9h8M9 2l3 2-3 2M4 7l-3 2 3 2" stroke="white" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Translate workflow
+              </button>
+              <div id="translateErr" class="err-inline" style="display:none;margin-top:10px"></div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div id="translateResultWrap" style="display:none">
+            <div class="panel-card">
+              <div class="card-head">
+                <span class="card-title" id="translateResultTitle">Translation</span>
+                <button class="exp-btn secondary" id="copyTransBtn" onclick="copyTranslation()" style="padding:4px 10px;font-size:11px;min-width:auto">Copy</button>
+              </div>
+              <div class="card-body" style="padding:10px 14px"><div id="translateJSONEl"></div></div>
+            </div>
+          </div>
+          <div id="translateFlagsWrap" style="display:none">
+            <div class="panel-card">
+              <div class="card-head"><span class="card-title">⚠ Translation notes</span></div>
+              <div class="card-body" style="padding:10px 14px"><div id="translateFlags"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- M6 LIBRARY -->
     <div class="tab-panel" id="panel-library">
       <div class="stats-bar" id="statsBar"></div>
       <div class="lib-top">
@@ -555,7 +797,8 @@ textarea.task:focus{border-color:rgba(102,126,234,0.45);box-shadow:0 0 0 3px rgb
     <div class="pw-features">
       <div class="pw-feat"><div class="pw-check"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2.5" stroke="#10b981" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Unlimited workflow parses</div>
       <div class="pw-feat"><div class="pw-check"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2.5" stroke="#10b981" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>All 6 platform exporters</div>
-      <div class="pw-feat"><div class="pw-check"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2.5" stroke="#10b981" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Visual flowchart renderer</div>
+      <div class="pw-feat"><div class="pw-check"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2.5" stroke="#10b981" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Error diagnosis &amp; debugging</div>
+      <div class="pw-feat"><div class="pw-check"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2.5" stroke="#10b981" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Cross-platform translation</div>
       <div class="pw-feat"><div class="pw-check"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2L7.5 2.5" stroke="#10b981" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Unlimited playbook library</div>
     </div>
     <div class="pw-actions">
@@ -580,23 +823,46 @@ const PB_KEY      = 'tdx_playbooks_v1';
 const FREE_LIMIT  = 5;
 const ICONS       = ['⚡','🔗','🤖','📊','📧','🔔','🗂️','🔄','💡','🛠️','🚀','🎯'];
 
-const SYSTEM_PROMPT = `You are an automation workflow architect. When given a plain-English description of a repetitive task, extract and structure it into an automation workflow.
-
-Return ONLY valid JSON — no markdown, no explanation, no text outside the JSON:
+// ── PLATFORM-NATIVE SYSTEM PROMPTS (Phase 1) ────────────────────────────────
+const BASE_SCHEMA = `Return ONLY valid JSON:
 {
-  "name": "Short descriptive name",
+  "name": "Workflow name",
   "description": "One sentence summary",
-  "trigger": { "type": "webhook|schedule|form|email|manual|app_event", "description": "What starts this automation" },
-  "steps": [
-    { "id": "step_1", "name": "Short step name", "description": "What this step does", "tool": "App/service name", "action": "Specific action" }
-  ],
-  "conditions": ["Branching logic as plain strings"],
-  "tools": ["All unique tools/apps needed"],
+  "trigger": { "type": "webhook|schedule|form|email|manual|app_event", "description": "What starts this" },
+  "steps": [{ "id": "step_1", "name": "Step name", "description": "What this does", "tool": "Service", "action": "Specific action", "credentials": "Auth type needed" }],
+  "conditions": ["Branching logic"],
+  "error_handling": ["Error handling approach"],
+  "tools": ["All unique tools"],
   "complexity": "simple|moderate|complex",
-  "estimated_time_saved": "e.g. 3 hours/week",
-  "n8n_node_types": ["n8n node types e.g. n8n-nodes-base.gmail"]
+  "estimated_time_saved": "X hours/week",
+  "considerations": ["Edge case or failure point or compliance note — max 5"],
+  "credentials_needed": [{ "service": "Gmail", "type": "OAuth2", "where": "Google Cloud Console" }]
 }
-Always include at least 3 steps. Return only the JSON object.`;
+Always include at least 3 steps. Return only the JSON.`;
+
+const PROD_SUFFIX = `
+IMPORTANT — Production Ready mode: You MUST include error handling and fallback paths for every step that can fail, retry logic with exponential backoff, rate limiting awareness, data validation before each major step, and logging/notification on failure. Make this robust enough to run unattended.`;
+
+const CONSIDERATIONS_SUFFIX = `
+After the JSON, on a new line write: ---CONSIDERATIONS---
+Then list 3-5 bullet points: edge cases not handled, potential failure points, GDPR/compliance notes if personal data is involved, suggested improvements. Format: • bullet text (under 15 words each)`;
+
+const PLATFORM_PROMPTS = {
+  n8n: `You are an expert n8n workflow architect. Generate production-ready n8n workflow blueprints using n8n-native terminology: nodes, connections, credentials, expressions ($json, $node), webhook triggers, scheduleTrigger, error workflows, sub-workflows, IF/Switch nodes. Reference real n8n node types (n8n-nodes-base.gmail, n8n-nodes-base.slack, etc). Never use generic terms when an n8n-specific term exists.\n` + BASE_SCHEMA,
+  make: `You are an expert Make.com scenario architect. Generate production-ready Make.com scenario blueprints using Make-native terminology: scenarios, modules, bundles, routers, filters, iterators, aggregators, webhooks, data stores, error handlers. Reference real Make.com module names (google-gmail:TriggerNewEmail, slack:CreateMessage). Never use generic terms when a Make-specific term exists.\n` + BASE_SCHEMA,
+  zapier: `You are an expert Zapier automation architect. Generate production-ready Zapier Zap blueprints using Zapier-native terminology: Zaps, triggers, actions, filters, paths, Formatter steps, Delays, multi-step Zaps, Zapier Tables. Reference real Zapier app names and event names. Never use generic terms when a Zapier-specific term exists.\n` + BASE_SCHEMA,
+  google: `You are an expert Google Cloud Workflows architect. Generate production-ready Google Cloud Workflows blueprints using GCP-native concepts: steps, conditions, parallel branches, subworkflows, sys.log, retry policies, connectors, Cloud Scheduler for triggers. Include IAM requirements. Never use generic terms when a GCP-specific term exists.\n` + BASE_SCHEMA,
+  powerautomate: `You are an expert Microsoft Power Automate flow architect. Generate production-ready Power Automate flow definitions using PA-native terminology: flows, connectors, actions, conditions, scopes, approvals, SharePoint, Teams, Outlook, Power Fx expressions. Reference real connector names (Office365Outlook, MicrosoftTeams, SharePoint). Never use generic terms when a PA-specific term exists.\n` + BASE_SCHEMA,
+  eventbridge: `You are an expert AWS EventBridge and serverless automation architect. Generate production-ready Amazon EventBridge Pipes configurations using AWS-native terminology: event buses, rules, targets, event patterns, Pipes, schedules, IAM roles, Lambda, SQS, SNS, Step Functions. Always include IAM permissions guidance. Never use generic terms when an AWS-specific term exists.\n` + BASE_SCHEMA
+};
+
+function getSystemPrompt(platformId, isProd) {
+  const base = PLATFORM_PROMPTS[platformId] || PLATFORM_PROMPTS.n8n;
+  return base + (isProd ? PROD_SUFFIX : '') + CONSIDERATIONS_SUFFIX;
+}
+
+// Legacy alias for library download
+const SYSTEM_PROMPT = PLATFORM_PROMPTS.n8n + CONSIDERATIONS_SUFFIX;
 
 // ── TOOL MAPS ────────────────────────────────────────────────────────────────
 const TOOL_TO_N8N={gmail:'n8n-nodes-base.gmail',email:'n8n-nodes-base.emailSend',slack:'n8n-nodes-base.slack',notion:'n8n-nodes-base.notion',airtable:'n8n-nodes-base.airtable',trello:'n8n-nodes-base.trello',hubspot:'n8n-nodes-base.hubspot',salesforce:'n8n-nodes-base.salesforce',stripe:'n8n-nodes-base.stripe',typeform:'n8n-nodes-base.typeform',sheets:'n8n-nodes-base.googleSheets',googlesheets:'n8n-nodes-base.googleSheets',jira:'n8n-nodes-base.jira',github:'n8n-nodes-base.github',discord:'n8n-nodes-base.discord',telegram:'n8n-nodes-base.telegram',whatsapp:'n8n-nodes-base.whatsApp',webhook:'n8n-nodes-base.webhook',http:'n8n-nodes-base.httpRequest',api:'n8n-nodes-base.httpRequest',mysql:'n8n-nodes-base.mySql',postgres:'n8n-nodes-base.postgres',openai:'@n8n/n8n-nodes-langchain.openAi',claude:'@n8n/n8n-nodes-langchain.anthropic',schedule:'n8n-nodes-base.scheduleTrigger',form:'n8n-nodes-base.formTrigger',calendar:'n8n-nodes-base.googleCalendar',drive:'n8n-nodes-base.googleDrive',mailchimp:'n8n-nodes-base.mailchimp',twilio:'n8n-nodes-base.twilio',pipedrive:'n8n-nodes-base.pipedrive',asana:'n8n-nodes-base.asana',clickup:'n8n-nodes-base.clickUp',zoom:'n8n-nodes-base.zoom',shopify:'n8n-nodes-base.shopify'};
@@ -709,7 +975,7 @@ function renderPlatformBlueprint(wf){
 
 // ── APP STATE ────────────────────────────────────────────────────────────────
 let sessionToken=null,userPlan='free',usedThisMonth=0;
-let currentWF=null,selectedNodeId=null,loadedPbId=null;
+let currentWF=null,originalPrompt='',selectedNodeId=null,loadedPbId=null;
 let cnodes=[],cedges=[],animOn=true,raf=null,tick=0,cdrag=null,cSelNode=null;
 const NW=172,NH=62;
 const NCOLORS={trigger:'#667eea',step:'#10b981',condition:'#f59e0b',end:'#764ba2'};
@@ -718,8 +984,181 @@ const NBD={trigger:'rgba(102,126,234,0.4)',step:'rgba(16,185,129,0.35)',conditio
 let cam={x:0,y:0,zoom:1};
 
 // ── BOOT ─────────────────────────────────────────────────────────────────────
+
+// ── COMPLEXITY TOGGLE ────────────────────────────────────────────────────────
+let cxMode = 'draft';
+function setCx(mode) {
+  cxMode = mode;
+  document.getElementById('cx-draft').classList.toggle('active', mode === 'draft');
+  document.getElementById('cx-prod').classList.toggle('active', mode === 'prod');
+}
+
+// ── PLATFORM PROMPT HELPER ───────────────────────────────────────────────────
+function getSystemPrompt() {
+  return getSystemPrompt_fn(currentPlatform.id, cxMode === 'prod');
+}
+function getSystemPrompt_fn(platformId, isProd) {
+  const base = PLATFORM_PROMPTS[platformId] || PLATFORM_PROMPTS.n8n;
+  return base + (isProd ? PROD_SUFFIX : '') + CONSIDERATIONS_SUFFIX;
+}
+
+// ── PARSE RESPONSE HELPER ────────────────────────────────────────────────────
+function parseWFResponse(raw) {
+  let jsonPart = raw, considerPart = '';
+  const sep = raw.indexOf('---CONSIDERATIONS---');
+  if (sep > -1) { jsonPart = raw.substring(0, sep); considerPart = raw.substring(sep + 20); }
+  const cleaned = jsonPart.replace(/```json\s*|```\s*/g, '').trim();
+  let wf;
+  try { wf = JSON.parse(cleaned); } catch { throw new Error('Could not parse AI response. Try rephrasing your workflow.'); }
+  return { wf, considerations: considerPart.trim() };
+}
+
+// ── PHASE 4 — CONSIDERATIONS ─────────────────────────────────────────────────
+function renderConsiderations(rawText, fromWF) {
+  const items = [];
+  if (fromWF && Array.isArray(fromWF)) fromWF.forEach(c => items.push(c));
+  if (rawText) { rawText.split('\n').forEach(line => { const clean = line.replace(/^[•\-\*\d\.]+\s*/, '').trim(); if (clean.length > 5) items.push(clean); }); }
+  if (!items.length) return;
+  document.getElementById('considerBody').innerHTML = items.slice(0, 5).map(item => `<div class="consider-item"><div class="consider-dot"></div><div>${esc(item)}</div></div>`).join('');
+  document.getElementById('considerPanel').style.display = 'block';
+}
+
+// ── PHASE 5.2 — CREDENTIALS ──────────────────────────────────────────────────
+function renderCredentials(creds) {
+  if (!creds || !creds.length) return;
+  const ICONS = { gmail: '📧', email: '📧', slack: '💬', notion: '📝', airtable: '📊', hubspot: '🟠', stripe: '💳', github: '🐙', google: '☁️', aws: '🟠', amazon: '🟠', microsoft: '🔷', default: '🔑' };
+  function getIcon(service) { const k = service.toLowerCase(); for (const [key, val] of Object.entries(ICONS)) if (k.includes(key)) return val; return ICONS.default; }
+  document.getElementById('credBody').innerHTML = creds.slice(0, 6).map(c => `<div class="cred-item"><div class="cred-icon">${getIcon(c.service)}</div><div><div class="cred-name">${esc(c.service)} <span style="font-size:10px;color:var(--text3);font-family:'IBM Plex Mono',monospace">${esc(c.type || '')}</span></div><div class="cred-where">${esc(c.where || '')}</div></div></div>`).join('');
+  document.getElementById('credPanel').style.display = 'block';
+}
+
+// ── PHASE 2.1 — REFINEMENT ───────────────────────────────────────────────────
+async function runRefine() {
+  const refinement = document.getElementById('refineInput').value.trim();
+  if (!refinement || !currentWF) return;
+  const btn = document.getElementById('refineBtn');
+  btn.disabled = true; btn.innerHTML = '<div class="spinner" style="width:12px;height:12px;border-width:1.5px"></div> Refining…';
+  try {
+    const prompt = `Original request: "${originalPrompt}"\n\nCurrent workflow JSON:\n${JSON.stringify(currentWF, null, 2)}\n\nRefinement instruction: "${refinement}"\n\nOutput ONLY the revised workflow JSON — no commentary, no explanation.`;
+    const raw = await callClaude(prompt, getSystemPrompt_fn(currentPlatform.id, false) + CONSIDERATIONS_SUFFIX);
+    const { wf, considerations } = parseWFResponse(raw);
+    currentWF = wf; cnodes = []; cedges = [];
+    renderParseResult(wf); syncExportPanel(wf);
+    renderConsiderations(considerations, wf.considerations);
+    renderCredentials(wf.credentials_needed);
+    document.getElementById('refineInput').value = '';
+    toast('Workflow refined');
+  } catch(e) { if (e.message !== '__paywall__') toast('Refine failed: ' + e.message); }
+  finally { btn.disabled = false; btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 6h10M7 2l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg> Apply refinement'; }
+}
+
+// ── PHASE 2.2 — MAKE PRODUCTION-READY ────────────────────────────────────────
+async function makeProdReady() {
+  if (!currentWF) return;
+  const btn = document.getElementById('prodBtn');
+  btn.disabled = true; btn.innerHTML = '<div class="spinner" style="width:12px;height:12px;border-width:1.5px"></div> Upgrading…';
+  try {
+    const prompt = `Original request: "${originalPrompt}"\n\nCurrent workflow:\n${JSON.stringify(currentWF, null, 2)}\n\nMake this production-ready: add error handling, retry logic, data validation, rate limit handling, and failure notifications. Output ONLY the revised JSON.`;
+    const raw = await callClaude(prompt, getSystemPrompt_fn(currentPlatform.id, true) + CONSIDERATIONS_SUFFIX);
+    const { wf, considerations } = parseWFResponse(raw);
+    currentWF = wf; cnodes = []; cedges = [];
+    renderParseResult(wf); syncExportPanel(wf);
+    renderConsiderations(considerations, wf.considerations);
+    renderCredentials(wf.credentials_needed);
+    toast('🛡️ Production-ready upgrade applied');
+  } catch(e) { if (e.message !== '__paywall__') toast('Failed: ' + e.message); }
+  finally { btn.disabled = false; btn.innerHTML = '🛡️ Make production-ready'; }
+}
+
+// ── PHASE 3 — DEBUG ──────────────────────────────────────────────────────────
+async function runDebug() {
+  const errorMsg = document.getElementById('debugError').value.trim();
+  const wfJSON = document.getElementById('debugJSON').value.trim();
+  const platform = document.getElementById('debugPlatSel').value;
+  if (!errorMsg) { const e = document.getElementById('debugErr'); e.textContent = 'Please paste an error message.'; e.style.display = 'block'; return; }
+  document.getElementById('debugErr').style.display = 'none';
+  document.getElementById('debugResultWrap').style.display = 'none';
+  const btn = document.getElementById('debugBtn');
+  btn.disabled = true; btn.innerHTML = '<div class="spinner"></div> Diagnosing…';
+  const platNames = { n8n:'n8n', make:'Make.com', zapier:'Zapier', google:'Google Cloud Workflows', powerautomate:'Power Automate', eventbridge:'Amazon EventBridge' };
+  const platName = platNames[platform] || platform;
+  const debugSysPrompt = `You are an expert ${platName} debugger. Analyze automation errors and provide specific, actionable fixes using ${platName}-native terminology and configuration paths. Never give generic answers.`;
+  const userMsg = `Platform: ${platName}\n\nError message:\n${errorMsg}${wfJSON ? '\n\nWorkflow JSON (context):\n' + wfJSON.substring(0, 3000) : ''}\n\nRespond ONLY with this JSON:\n{"title":"Brief error title under 8 words","cause":"Root cause one sentence","explanation":"Plain English 2-3 sentences no jargon","fix":"Exact step-by-step fix referencing ${platName} UI paths","code":"Corrected JSON or config snippet if applicable, empty string if not"}`;
+  try {
+    const raw = await callClaude(userMsg, debugSysPrompt);
+    const cleaned = raw.replace(/```json\s*|```\s*/g, '').trim();
+    const result = JSON.parse(cleaned);
+    document.getElementById('debugResultTitle').textContent = result.title || 'Diagnosis';
+    document.getElementById('debugCause').textContent = result.cause || '—';
+    document.getElementById('debugExplain').textContent = result.explanation || '—';
+    document.getElementById('debugFix').innerHTML = result.fix ? result.fix.replace(/\n/g, '<br>') : '—';
+    if (result.code && result.code.trim()) { document.getElementById('debugCode').textContent = result.code; document.getElementById('debugCode').style.display = 'block'; } else { document.getElementById('debugCode').style.display = 'none'; }
+    document.getElementById('debugResultWrap').style.display = 'block';
+  } catch(e) { if (e.message !== '__paywall__') { const el = document.getElementById('debugErr'); el.textContent = 'Diagnosis failed: ' + e.message; el.style.display = 'block'; } }
+  finally { btn.disabled = false; btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5" stroke="white" stroke-width="1.3" fill="none"/><path d="M6.5 4v3M6.5 8.5v.5" stroke="white" stroke-width="1.3" stroke-linecap="round"/></svg> Diagnose error'; }
+}
+
+// ── PHASE 6 — TRANSLATE ──────────────────────────────────────────────────────
+let translateOutput = null;
+async function runTranslate() {
+  const input = document.getElementById('translateInput').value.trim();
+  const fromPlat = document.getElementById('translateFrom').value;
+  const toPlat = document.getElementById('translateTo').value;
+  if (!input) { const e = document.getElementById('translateErr'); e.textContent = 'Please paste a workflow or description.'; e.style.display = 'block'; return; }
+  if (fromPlat === toPlat) { const e = document.getElementById('translateErr'); e.textContent = 'Source and target must be different.'; e.style.display = 'block'; return; }
+  document.getElementById('translateErr').style.display = 'none';
+  document.getElementById('translateResultWrap').style.display = 'none';
+  document.getElementById('translateFlagsWrap').style.display = 'none';
+  const btn = document.getElementById('translateBtn');
+  btn.disabled = true; btn.innerHTML = '<div class="spinner"></div> Translating…';
+  const platNames = { n8n:'n8n', make:'Make.com', zapier:'Zapier', google:'Google Cloud Workflows', powerautomate:'Power Automate', eventbridge:'Amazon EventBridge' };
+  const fromName = platNames[fromPlat] || fromPlat;
+  const toName = platNames[toPlat] || toPlat;
+  const toSysPrompt = getSystemPrompt_fn(toPlat, false) + `\n\nSPECIAL: You are TRANSLATING from ${fromName} to ${toName}. Preserve all logic. Use ${toName}-native terminology throughout.\n\nAfter the JSON write: ---FLAGS---\nThen list features from ${fromName} with no direct ${toName} equivalent and suggest alternatives. Format: • FEATURE: suggestion`;
+  const userMsg = `Translate this ${fromName} workflow to ${toName}:\n\n${input}`;
+  try {
+    const raw = await callClaude(userMsg, toSysPrompt);
+    let jsonPart = raw, flagsPart = '';
+    const sep = raw.indexOf('---FLAGS---');
+    if (sep > -1) { jsonPart = raw.substring(0, sep); flagsPart = raw.substring(sep + 11); }
+    const cleaned = jsonPart.replace(/```json\s*|```\s*/g, '').trim();
+    const result = JSON.parse(cleaned);
+    translateOutput = result;
+    document.getElementById('translateResultTitle').textContent = `${fromName} → ${toName}`;
+    document.getElementById('translateJSONEl').innerHTML = `<div class="json-box">${syntaxHL(JSON.stringify(result, null, 2))}</div>`;
+    document.getElementById('translateResultWrap').style.display = 'block';
+    if (flagsPart.trim()) {
+      const flags = flagsPart.trim().split('\n').map(l => l.replace(/^[•\-\*]+\s*/, '').trim()).filter(l => l.length > 3);
+      if (flags.length) {
+        document.getElementById('translateFlags').innerHTML = flags.slice(0, 6).map(f => { const p = f.split(':'); return `<div class="flag-item">${p.length > 1 ? `<strong>${esc(p[0])}</strong>${esc(p.slice(1).join(':'))}` : esc(f)}</div>`; }).join('');
+        document.getElementById('translateFlagsWrap').style.display = 'block';
+      }
+    }
+  } catch(e) { if (e.message !== '__paywall__') { const el = document.getElementById('translateErr'); el.textContent = 'Translation failed: ' + e.message; el.style.display = 'block'; } }
+  finally { btn.disabled = false; btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M1 4h8M1 9h8M9 2l3 2-3 2M4 7l-3 2 3 2" stroke="white" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg> Translate workflow'; }
+}
+
+function copyTranslation() {
+  if (!translateOutput) return;
+  navigator.clipboard.writeText(JSON.stringify(translateOutput, null, 2)).then(() => { const b = document.getElementById('copyTransBtn'); b.textContent = 'Copied!'; setTimeout(() => b.textContent = 'Copy', 1800); });
+}
+
 function init(){
   const hash=window.location.hash;
+  // Handle Supabase OAuth callback — arrives as #access_token=...&refresh_token=...
+  if(hash.includes('access_token=')){
+    const params=new URLSearchParams(hash.substring(1));
+    const accessToken=params.get('access_token');
+    const refreshToken=params.get('refresh_token');
+    if(accessToken){
+      history.replaceState(null,'','/app');
+      // Store the access token directly as session token
+      sessionToken=accessToken;
+      localStorage.setItem(STORAGE_KEY,sessionToken);
+      loadAndShowApp();
+      return;
+    }
+  }
   if(hash.includes('confirm=')){const rawToken=hash.split('confirm=')[1].split('&')[0];history.replaceState(null,'','/app');showLoginView();showConfirmStep(rawToken);return}
   if(hash.includes('auth-error=')){const m=decodeURIComponent(hash.split('auth-error=')[1].split('&')[0]);history.replaceState(null,'','/app');showLoginView();showLoginErr(m);return}
   if(hash.includes('checkout=success')){history.replaceState(null,'','/app');const s=localStorage.getItem(STORAGE_KEY);if(s){sessionToken=s;loadAndShowApp(()=>toast('🎉 Welcome to Pro!'));return}}
@@ -730,6 +1169,30 @@ function init(){
 
 // ── AUTH ─────────────────────────────────────────────────────────────────────
 function showLoginView(){document.getElementById('view-login').classList.add('active');document.getElementById('view-app').classList.remove('active')}
+
+// ── OAUTH LOGIN ──────────────────────────────────────────────────────────────
+async function oauthLogin(provider) {
+  const buttons = document.querySelectorAll('.oauth-btn');
+  buttons.forEach(b => b.disabled = true);
+  document.getElementById('login-err').style.display = 'none';
+
+  try {
+    const res = await fetch(`${API_BASE}/api/auth/oauth`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ provider, redirect_url: window.location.origin + '/app' })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'OAuth error');
+    if (data.url) window.location.href = data.url;
+  } catch(e) {
+    const err = document.getElementById('login-err');
+    err.textContent = e.message;
+    err.style.display = 'block';
+    buttons.forEach(b => b.disabled = false);
+  }
+}
+
 function showLoginErr(m){const e=document.getElementById('login-err');e.textContent=m;e.style.display='block'}
 function showEmailForm(){document.getElementById('email-state').style.display='block';document.getElementById('sent-state').style.display='none';document.getElementById('confirm-state').style.display='none';document.getElementById('login-err').style.display='none'}
 
@@ -792,8 +1255,8 @@ function updatePlanUI(){
 }
 
 // ── CLAUDE API ───────────────────────────────────────────────────────────────
-async function callClaude(content){
-  const res=await fetch(`${API_BASE}/api/claude`,{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${sessionToken}`},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1200,system:SYSTEM_PROMPT,messages:[{role:'user',content}]})});
+async function callClaude(content,sysPrompt){
+  const res=await fetch(`${API_BASE}/api/claude`,{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${sessionToken}`},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1200,system:sysPrompt||SYSTEM_PROMPT,messages:[{role:'user',content}]})});
   const data=await res.json();
   if(res.status===402){showPaywall(data.message);throw new Error('__paywall__')}
   if(res.status===401){logOut();throw new Error('Session expired — please log in again.')}
@@ -817,14 +1280,21 @@ async function startCheckout(){
 // ── M1 PARSE ─────────────────────────────────────────────────────────────────
 async function runParse(){
   const input=document.getElementById('taskIn').value.trim();if(!input)return;
+  originalPrompt=input;
   const btn=document.getElementById('parseBtn'),err=document.getElementById('parseErr');
   err.style.display='none';document.getElementById('resultWrap').style.display='none';
+  document.getElementById('considerPanel').style.display='none';
+  document.getElementById('credPanel').style.display='none';
   btn.disabled=true;btn.innerHTML='<div class="spinner"></div> Parsing with Claude…';
   try{
-    currentWF=await callClaude(input);
-    cnodes=[];cedges=[];
-    renderParseResult(currentWF);
-    syncExportPanel(currentWF);
+    const sysPrompt=getSystemPrompt_fn(currentPlatform.id,cxMode==='prod');
+    const raw=await callClaude(input,sysPrompt);
+    const{wf,considerations}=parseWFResponse(raw);
+    currentWF=wf;cnodes=[];cedges=[];
+    renderParseResult(wf);syncExportPanel(wf);
+    renderConsiderations(considerations,wf.considerations);
+    renderCredentials(wf.credentials_needed);
+    document.getElementById('refinePanel').style.display='block';
   }catch(e){if(e.message!=='__paywall__'){err.textContent=e.message;err.style.display='block'}}
   finally{btn.disabled=false;btn.innerHTML='<svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1L8 4.5H12L9.5 6.5L10.5 10L6.5 8L2.5 10L3.5 6.5L1 4.5H5L6.5 1Z" fill="white" opacity="0.9"/></svg> Parse workflow'}
 }
@@ -844,7 +1314,7 @@ function renderParseResult(wf){
   document.getElementById('resultWrap').style.display='block';
 }
 
-function useEx(el){document.getElementById('taskIn').value=el.textContent;document.getElementById('parseErr').style.display='none';document.getElementById('resultWrap').style.display='none';currentWF=null}
+function useEx(el){document.getElementById('taskIn').value=el.textContent;document.getElementById('parseErr').style.display='none';document.getElementById('resultWrap').style.display='none';document.getElementById('refinePanel').style.display='none';document.getElementById('considerPanel').style.display='none';document.getElementById('credPanel').style.display='none';currentWF=null;cnodes=[];cedges=[]}
 
 // ── M2 CANVAS ────────────────────────────────────────────────────────────────
 function initCanvas(){
@@ -1031,6 +1501,7 @@ function switchTab(tab){
   const panel=document.getElementById(`panel-${tab}`);panel.classList.add('active');panel.style.display='flex';
   if(tab==='flow'){resizeCanvas();if(currentWF&&cnodes.length===0)buildGraph(currentWF);if(!raf&&animOn)raf=requestAnimationFrame(loop)}
   if(tab==='library')renderLibrary();
+  if(tab==='debug'||tab==='translate'){panel.style.display='flex';panel.style.flexDirection='column';}
 }
 
 // ── UTILS ─────────────────────────────────────────────────────────────────────
