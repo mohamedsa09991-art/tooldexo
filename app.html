@@ -1198,15 +1198,24 @@ async function oauthLogin(provider) {
   const supaProvider = providerMap[provider];
 
   try {
+    const options = {
+      redirectTo: 'https://tooldexo.com/app',
+    };
+    // Force account picker on every login
+    if (provider === 'azure') {
+      options.scopes = 'email profile openid';
+      options.queryParams = { prompt: 'select_account' };
+    } else if (provider === 'github') {
+      // GitHub doesn't support prompt= but login param forces re-auth
+      options.queryParams = { prompt: 'login' };
+    } else if (provider === 'google') {
+      options.queryParams = { prompt: 'select_account' };
+    }
     const { data, error } = await _supa.auth.signInWithOAuth({
       provider: supaProvider,
-      options: {
-        redirectTo: 'https://tooldexo.com/app',
-        scopes: provider === 'azure' ? 'email profile openid' : undefined,
-      }
+      options
     });
     if (error) throw error;
-    // Supabase automatically redirects the browser — nothing else needed
   } catch(e) {
     err.textContent = e.message || 'Sign in failed. Please try again.';
     err.style.display = 'block';
@@ -1313,9 +1322,7 @@ async function callClaude(content,sysPrompt){
   }
   if(!res.ok)throw new Error(data.error||`API error ${res.status}`);
   if(data._meta){userPlan=data._meta.plan;if(data._meta.used!=null)usedThisMonth=data._meta.used;updatePlanUI()}
-  const raw=data.content?.find(b=>b.type==='text')?.text||'';
-  const cleaned=raw.replace(/```json\s*|```\s*/g,'').trim();
-  try{return JSON.parse(cleaned)}catch{throw new Error('Could not parse AI response. Try rephrasing your workflow.')}
+  return data.content?.find(b=>b.type==='text')?.text||'';
 }
 
 // ── PAYWALL / STRIPE ─────────────────────────────────────────────────────────
