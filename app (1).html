@@ -1,0 +1,1530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tooldexo — App</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#05080F;--bg2:#090D17;--bg3:#0D1220;--bg4:#111826;
+  --border:rgba(242,239,233,0.07);--border2:rgba(242,239,233,0.13);--border3:rgba(242,239,233,0.22);
+  --text:#F2EFE9;--text2:#9E9A90;--text3:#4A4740;
+  --gold:#C4913D;--gold-l:#D4A85A;--gold-d:#9B6B3A;
+  --gold-bg:rgba(196,145,61,0.08);--gold-bd:rgba(196,145,61,0.2);
+  --green:#2DD4BF;--green-bg:rgba(45,212,191,0.08);--green-bd:rgba(45,212,191,0.18);
+  --amber:#F59E0B;--amber-bg:rgba(245,158,11,0.08);--amber-bd:rgba(245,158,11,0.18);
+  --red-bg:rgba(239,68,68,0.07);--red-bd:rgba(239,68,68,0.18);--red-t:#FCA5A5;
+  --r:0px;--rl:2px;
+}
+html,body{height:100%;-webkit-font-smoothing:antialiased}
+body{font-family:'DM Sans',-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+::-webkit-scrollbar{width:3px;height:3px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--bg4)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes slideIn{from{opacity:0;transform:translateX(10px)}to{opacity:1;transform:translateX(0)}}
+
+.view{display:none}.view.active{display:flex;flex-direction:column;min-height:100vh}
+
+/* ── LOGIN ── */
+#view-login{align-items:center;justify-content:center;padding:24px;min-height:100vh;background:var(--bg);position:relative;z-index:1}
+
+#view-login::before{
+  content:'';position:absolute;inset:0;
+  background-image:linear-gradient(rgba(242,239,233,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(242,239,233,0.025) 1px,transparent 1px);
+  background-size:48px 48px;
+  mask-image:radial-gradient(ellipse 60% 60% at 50% 50%,black,transparent);
+  pointer-events:none;
+}
+
+.login-wrap{width:100%;max-width:380px;animation:fadeUp .4s ease both;position:relative;z-index:1}
+
+.login-card{background:var(--bg2);border:1px solid var(--border)}
+
+.login-top{padding:36px 32px 28px;border-bottom:1px solid var(--border);text-align:center}
+.login-logo{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:28px}
+.login-logo-mark{width:34px;height:34px;border:1px solid var(--gold-bd);display:flex;align-items:center;justify-content:center}
+.login-logo-mark svg{width:14px;height:14px}
+.login-logo-text{font-family:'Playfair Display',serif;font-size:18px;font-weight:500;color:var(--text)}
+.login-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:400;color:var(--text);margin-bottom:8px}
+.login-sub{font-size:13.5px;color:var(--text2);line-height:1.6;max-width:280px;margin:0 auto}
+
+.login-body{padding:28px 32px;display:flex;flex-direction:column;gap:14px}
+.field-label{font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:7px}
+.field-input{
+  width:100%;background:rgba(242,239,233,0.03);
+  border:1px solid var(--border2);padding:12px 14px;
+  color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;
+  outline:none;transition:border-color .15s;
+}
+.field-input::placeholder{color:var(--text3)}
+.field-input:focus{border-color:var(--gold-bd)}
+
+.btn-login{
+  width:100%;padding:13px;
+  background:var(--text);color:var(--bg);border:none;
+  font-family:'DM Sans',sans-serif;font-size:12.5px;font-weight:700;
+  letter-spacing:.07em;text-transform:uppercase;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:8px;transition:all .15s;
+}
+.btn-login:hover{background:var(--gold-l);color:var(--bg)}
+.btn-login:active{transform:scale(.99)}
+.btn-login:disabled{background:rgba(242,239,233,0.2);cursor:default}
+
+.spinner{width:13px;height:13px;border:1.5px solid rgba(5,8,15,0.3);border-top-color:var(--bg);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+
+.err-box{padding:10px 13px;background:var(--red-bg);border:1px solid var(--red-bd);font-size:13px;color:var(--red-t);line-height:1.5}
+
+.sent-state{text-align:center;display:none;flex-direction:column;gap:10px;padding:4px 0}
+.sent-icon{width:44px;height:44px;border:1px solid var(--gold-bd);display:flex;align-items:center;justify-content:center;margin:0 auto}
+.sent-icon svg{width:20px;height:20px}
+.sent-title{font-family:'Playfair Display',serif;font-size:16px;color:var(--text)}
+.sent-sub{font-size:13px;color:var(--text2);line-height:1.6}
+.resend-btn{font-size:12.5px;color:var(--gold);background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:opacity .13s;letter-spacing:.03em}
+.resend-btn:hover{opacity:.7}
+
+.login-footer{padding:14px 32px;background:rgba(0,0,0,0.2);border-top:1px solid var(--border)}
+.privacy-note{font-size:11.5px;color:var(--text3);line-height:1.6;display:flex;gap:8px;align-items:flex-start}
+
+/* ── APP ── */
+#view-app{background:var(--bg)}
+
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;height:52px;
+  border-bottom:1px solid var(--border);flex-shrink:0;
+  position:sticky;top:0;z-index:100;
+  background:rgba(5,8,15,0.95);backdrop-filter:blur(20px);
+}
+.tb-left{display:flex;align-items:center;gap:14px}
+.tb-logo{display:flex;align-items:center;gap:8px;text-decoration:none}
+.tb-logo-mark{width:24px;height:24px;border:1px solid var(--gold-bd);display:flex;align-items:center;justify-content:center}
+.tb-logo-mark svg{width:10px;height:10px}
+.tb-logo-text{font-family:'Playfair Display',serif;font-size:15px;font-weight:500;color:var(--text)}
+.plan-pill{font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border:1px solid}
+.plan-free{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-bd)}
+.plan-pro{background:var(--gold-bg);color:var(--gold);border-color:var(--gold-bd)}
+.usage-pill{font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;background:var(--bg3);border:1px solid var(--border);padding:3px 9px}
+.tb-right{display:flex;align-items:center;gap:8px}
+.upgrade-btn{font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:var(--text);color:var(--bg);border:none;padding:7px 16px;cursor:pointer;transition:all .13s}
+.upgrade-btn:hover{background:var(--gold-l);color:var(--bg)}
+.logout-btn{font-size:11.5px;font-weight:500;background:none;border:1px solid var(--border);color:var(--text3);padding:6px 12px;cursor:pointer;transition:all .13s;font-family:'DM Sans',sans-serif;letter-spacing:.03em}
+.logout-btn:hover{border-color:var(--red-bd);color:var(--red-t)}
+
+.tab-nav{display:flex;gap:0;padding:0 24px;border-bottom:1px solid var(--border);flex-shrink:0;overflow-x:auto;background:var(--bg2)}
+.tab-nav::-webkit-scrollbar{height:0}
+.tnav-btn{font-size:12px;font-weight:600;letter-spacing:.04em;background:none;border:none;border-bottom:2px solid transparent;padding:12px 18px;color:var(--text3);cursor:pointer;transition:all .13s;white-space:nowrap;font-family:'DM Sans',sans-serif;margin-bottom:-1px}
+.tnav-btn:hover{color:var(--text2)}
+.tnav-btn.active{color:var(--gold);border-bottom-color:var(--gold)}
+.tnav-badge{font-size:9px;font-weight:700;background:var(--gold);color:var(--bg);padding:1px 5px;margin-left:5px}
+
+.app-content{flex:1;overflow:hidden}
+.tab-panel{display:none;padding:20px;gap:14px;overflow-y:auto}
+.tab-panel.active{display:flex;flex-direction:column}
+#panel-flow{display:none;position:relative;overflow:hidden;padding:0}
+#panel-flow.active{display:flex;flex-direction:column}
+
+/* ── M1 PARSE ── */
+.parse-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:680px){.parse-grid{grid-template-columns:1fr}}
+
+.panel-card{background:var(--bg2);border:1px solid var(--border)}
+.card-head{padding:11px 15px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.card-title{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3)}
+.card-body{padding:14px}
+
+textarea.task{
+  width:100%;background:rgba(242,239,233,0.03);
+  border:1px solid var(--border2);padding:11px 13px;
+  color:var(--text);font-family:'DM Sans',sans-serif;font-size:13.5px;line-height:1.6;
+  resize:none;height:104px;outline:none;transition:border-color .15s;
+}
+textarea.task::placeholder{color:var(--text3)}
+textarea.task:focus{border-color:var(--gold-bd)}
+
+.examples{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.ex{font-size:11.5px;font-family:'DM Sans',sans-serif;font-weight:500;background:none;border:1px solid var(--border);color:var(--text3);padding:3px 10px;cursor:pointer;transition:all .13s}
+.ex:hover{border-color:var(--gold-bd);color:var(--gold)}
+
+.btn-parse{
+  width:100%;margin-top:10px;padding:12px;
+  background:var(--text);border:none;
+  color:var(--bg);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:8px;transition:all .15s;
+}
+.btn-parse:hover{background:var(--gold-l);color:var(--bg)}
+.btn-parse:active{transform:scale(.99)}
+.btn-parse:disabled{background:rgba(242,239,233,0.15);cursor:default;transform:none}
+
+.err-inline{padding:10px 13px;background:var(--red-bg);border:1px solid var(--red-bd);font-size:13px;color:var(--red-t)}
+
+.result-card{animation:fadeUp .3s ease;background:var(--bg2);border:1px solid var(--border)}
+.rc-head{padding:13px 15px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.rc-name{font-family:'Playfair Display',serif;font-size:15px;font-weight:400;color:var(--text)}
+.rc-desc{font-size:12px;color:var(--text2);margin-top:3px;line-height:1.5}
+.rc-btns{display:flex;gap:6px;flex-shrink:0}
+.icon-btn{width:30px;height:30px;border:1px solid var(--border2);background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .13s;color:var(--text2)}
+.icon-btn:hover{background:rgba(242,239,233,0.05);color:var(--text)}
+.icon-btn.save:hover{border-color:var(--gold-bd);color:var(--gold)}
+.icon-btn.dl:hover{border-color:var(--green-bd);color:var(--green)}
+
+.steps-flow{padding:13px 15px;display:flex;flex-direction:column;gap:7px}
+.flow-row{display:flex;align-items:flex-start;gap:9px}
+.flow-conn{display:flex;flex-direction:column;align-items:center}
+.flow-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:6px}
+.flow-line{width:1px;flex:1;min-height:10px;background:var(--border);margin:2px 0}
+.flow-content{flex:1;padding-bottom:3px}
+.flow-name{font-size:13px;font-weight:500;color:var(--text)}
+.flow-sub{font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;margin-top:1px}
+.tool-pill{display:inline-block;background:var(--gold-bg);border:1px solid var(--gold-bd);color:var(--gold);font-size:9px;font-family:'DM Mono',monospace;padding:1px 5px;margin-left:5px}
+
+.rc-footer{padding:10px 15px;background:rgba(0,0,0,0.2);border-top:1px solid var(--border);display:flex;gap:16px;flex-wrap:wrap}
+.foot-item{font-size:11px;color:var(--text3);font-family:'DM Mono',monospace}
+.foot-item span{color:var(--gold)}
+
+/* ── M2 CANVAS ── */
+#flowCanvas{display:block;width:100%;height:100%;cursor:default;flex:1;min-height:500px}
+.canvas-hint{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);font-size:11px;color:var(--text3);pointer-events:none;white-space:nowrap;font-family:'DM Mono',monospace}
+.inspector{position:absolute;top:12px;right:12px;width:215px;background:var(--bg2);border:1px solid var(--border2);padding:14px;animation:slideIn .2s ease;display:none}
+.insp-close{position:absolute;top:10px;right:10px;background:none;border:none;color:var(--text3);cursor:pointer;font-size:14px;line-height:1}
+.insp-close:hover{color:var(--text)}
+.insp-type{font-size:9px;letter-spacing:.1em;color:var(--text3);text-transform:uppercase;margin-bottom:4px;font-family:'DM Mono',monospace}
+.insp-name{font-family:'Playfair Display',serif;font-size:14px;font-weight:400;color:var(--text);margin-bottom:10px}
+.insp-row{margin-bottom:8px}
+.insp-label{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:3px;font-family:'DM Mono',monospace}
+.insp-val{font-size:12.5px;color:var(--text2);line-height:1.5}
+.insp-tag{display:inline-block;background:var(--gold-bg);border:1px solid var(--gold-bd);color:var(--gold);font-size:10px;font-family:'DM Mono',monospace;padding:1px 5px;margin:1px 2px 1px 0}
+.insp-action{display:inline-block;background:var(--green-bg);border:1px solid var(--green-bd);color:var(--green);font-size:10px;font-family:'DM Mono',monospace;padding:1px 5px;margin-top:2px}
+
+.flow-toolbar{position:absolute;top:12px;left:12px;display:flex;gap:5px;z-index:10}
+.ftb-btn{font-size:11px;font-weight:600;letter-spacing:.05em;font-family:'DM Sans',sans-serif;background:var(--bg2);border:1px solid var(--border2);color:var(--text3);padding:5px 12px;cursor:pointer;transition:all .13s}
+.ftb-btn:hover{color:var(--text2)}
+.ftb-btn.active{border-color:var(--gold-bd);color:var(--gold);background:var(--gold-bg)}
+
+/* ── M3 EXPORT ── */
+.export-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:680px){.export-grid{grid-template-columns:1fr}}
+.n-row{display:flex;align-items:flex-start;gap:8px;padding:9px 11px;background:none;border:1px solid var(--border);cursor:pointer;transition:all .12s;margin-bottom:4px}
+.n-row:hover{background:var(--gold-bg);border-color:var(--gold-bd)}
+.n-row.selected{background:var(--gold-bg);border-color:var(--gold-bd)}
+.n-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.n-dot.trigger{background:var(--gold)}.n-dot.step{background:var(--green)}.n-dot.condition{background:var(--amber)}
+.n-label{font-size:12.5px;font-weight:500;color:var(--text);line-height:1.4}
+.n-sub{font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;margin-top:1px}
+.n-type-tag{font-size:9px;letter-spacing:.05em;padding:2px 6px;border:1px solid;font-family:'DM Mono',monospace;margin-left:auto;flex-shrink:0;margin-top:2px}
+.tag-trigger{background:var(--gold-bg);color:var(--gold);border-color:var(--gold-bd)}
+.tag-step{background:var(--green-bg);color:var(--green);border-color:var(--green-bd)}
+.tag-condition{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-bd)}
+.meta-strip{display:flex;gap:12px;flex-wrap:wrap;padding:10px 14px;background:rgba(0,0,0,0.2);border-top:1px solid var(--border)}
+.meta-item{font-size:11px;color:var(--text3);font-family:'DM Mono',monospace}.meta-item span{color:var(--gold)}
+.exp-actions{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.exp-btn{flex:1;min-width:110px;padding:9px 12px;font-size:11.5px;font-family:'DM Sans',sans-serif;font-weight:700;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:all .13s;border:1px solid;display:flex;align-items:center;justify-content:center;gap:6px}
+.exp-btn.primary{background:var(--text);border-color:var(--text);color:var(--bg)}.exp-btn.primary:hover{background:var(--gold-l);border-color:var(--gold-l)}
+.exp-btn.secondary{background:none;border-color:var(--border2);color:var(--text2)}.exp-btn.secondary:hover{border-color:var(--border3);color:var(--text)}
+.exp-btn:disabled{opacity:.3;cursor:default}
+.json-box{background:rgba(0,0,0,0.4);border:1px solid var(--border);padding:12px;font-family:'DM Mono',monospace;font-size:10.5px;line-height:1.75;max-height:260px;overflow-y:auto;color:var(--text2)}
+.jk{color:var(--gold)}.js{color:var(--green)}.jn{color:var(--amber)}.jb{color:var(--red-t)}
+.schema-item{padding:10px 12px;border-left:1px solid var(--gold-bd);background:var(--gold-bg);margin-bottom:8px}
+.schema-key{font-size:11px;font-family:'DM Mono',monospace;color:var(--gold);font-weight:400;margin-bottom:3px}
+.schema-val{font-size:12.5px;color:var(--text2);line-height:1.5}
+.exp-tabs{display:flex;gap:0;padding:0 14px;border-bottom:1px solid var(--border);background:var(--bg3)}
+.exp-tab{font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:10px 14px;border-bottom:2px solid transparent;cursor:pointer;color:var(--text3);transition:all .13s;font-family:'DM Sans',sans-serif;border-top:none;border-left:none;border-right:none;background:none;margin-bottom:-1px}
+.exp-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.exp-tab-content{display:none;padding:14px}.exp-tab-content.active{display:block}
+.import-guide{padding:12px 14px;background:var(--amber-bg);border:1px solid var(--amber-bd);font-size:13px;color:rgba(245,158,11,.75);line-height:1.7;margin-bottom:10px}
+.import-guide strong{color:var(--amber);display:block;margin-bottom:4px}
+
+/* ── M4 LIBRARY ── */
+.lib-top{display:flex;gap:8px;align-items:center}
+.search-box{flex:1;background:rgba(242,239,233,0.03);border:1px solid var(--border2);padding:9px 13px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color .15s}
+.search-box::placeholder{color:var(--text3)}.search-box:focus{border-color:var(--gold-bd)}
+.filter-sel{background:rgba(242,239,233,0.03);border:1px solid var(--border2);padding:9px 10px;color:var(--text2);font-family:'DM Sans',sans-serif;font-size:12.5px;outline:none;cursor:pointer}
+.filter-sel option{background:#090D17}
+.stats-bar{display:flex;gap:1px;flex-wrap:wrap;background:var(--border)}
+.stat-chip{background:var(--bg2);border:none;padding:14px 20px;text-align:left;flex:1;min-width:70px}
+.stat-num{font-family:'Playfair Display',serif;font-size:24px;font-weight:400;color:var(--text);line-height:1}
+.stat-lbl{font-size:10px;color:var(--text3);margin-top:4px;text-transform:uppercase;letter-spacing:.06em;font-family:'DM Mono',monospace}
+.lib-count{font-size:11px;color:var(--text3);font-family:'DM Mono',monospace}
+.lib-grid{display:flex;flex-direction:column;gap:1px;background:var(--border)}
+.lib-card{background:var(--bg2);padding:14px 16px;cursor:pointer;transition:background .15s;display:flex;gap:12px;align-items:flex-start}
+.lib-card:hover{background:var(--bg3)}
+.lib-card.loaded{background:var(--gold-bg)}
+.lc-icon{width:34px;height:34px;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px;background:var(--bg3)}
+.lc-body{flex:1;min-width:0}
+.lc-name{font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.01em}
+.lc-desc{font-size:12px;color:var(--text2);margin-top:2px;line-height:1.4;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.lc-meta{display:flex;gap:5px;margin-top:6px;flex-wrap:wrap;align-items:center}
+.lc-tag{font-size:9.5px;padding:2px 6px;border:1px solid;font-family:'DM Mono',monospace}
+.lc-actions{display:flex;flex-direction:column;gap:4px;flex-shrink:0}
+.sm-btn{width:26px;height:26px;border:1px solid var(--border);background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .13s;color:var(--text3)}
+.sm-btn:hover{background:rgba(242,239,233,0.05);color:var(--text2)}
+.sm-btn.del:hover{border-color:var(--red-bd);color:var(--red-t)}
+.empty-lib{padding:56px 20px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px}
+.empty-lib-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:400;color:var(--text2)}
+.empty-lib-sub{font-size:13px;color:var(--text3);line-height:1.6;max-width:240px}
+
+/* PAYWALL */
+.paywall{position:fixed;inset:0;background:rgba(5,8,15,0.94);z-index:200;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(12px)}
+.paywall.active{display:flex}
+.pw-card{width:100%;max-width:360px;background:var(--bg2);border:1px solid var(--border2);animation:fadeUp .3s ease;position:relative}
+.pw-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold-bd),transparent)}
+.pw-head{padding:32px 28px 24px;text-align:center;border-bottom:1px solid var(--border)}
+.pw-icon{font-size:28px;margin-bottom:16px}
+.pw-price{font-family:'Playfair Display',serif;font-size:52px;font-weight:400;color:var(--text);line-height:1}
+.pw-price-sub{font-size:12px;color:var(--text3);margin-top:4px;font-family:'DM Mono',monospace}
+.pw-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:400;color:var(--text);margin-top:14px}
+.pw-sub{font-size:13px;color:var(--text2);line-height:1.6;margin-top:6px}
+.pw-features{padding:20px 28px;display:flex;flex-direction:column;gap:9px}
+.pw-feat{display:flex;align-items:center;gap:9px;font-size:13.5px;color:var(--text2)}
+.pw-check{width:16px;height:16px;border:1px solid var(--gold-bd);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pw-actions{padding:0 28px 28px;display:flex;flex-direction:column;gap:8px}
+.pw-upgrade{width:100%;padding:13px;background:var(--text);border:none;color:var(--bg);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:8px}
+.pw-upgrade:hover{background:var(--gold-l)}
+.pw-upgrade:disabled{background:rgba(242,239,233,0.2);cursor:default}
+.pw-dismiss{width:100%;padding:10px;background:none;border:1px solid var(--border2);color:var(--text3);font-size:12px;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .13s;letter-spacing:.04em}
+.pw-dismiss:hover{color:var(--text2);border-color:var(--border3)}
+
+/* TOAST */
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--text);color:var(--bg);font-size:12.5px;font-weight:600;letter-spacing:.04em;padding:9px 20px;opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap;z-index:9999;font-family:'DM Sans',sans-serif}
+.toast.show{opacity:1}
+
+.plat-btn{font-size:11px;font-weight:600;letter-spacing:.04em;font-family:'DM Sans',sans-serif;background:var(--bg2);border:none;color:var(--text3);padding:9px 14px;cursor:pointer;transition:all .13s;white-space:nowrap;flex:1;min-width:80px}
+.plat-btn:hover{color:var(--text2);background:var(--bg3)}
+.plat-btn.active{background:var(--gold-bg);color:var(--gold);border-bottom:2px solid var(--gold)}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="view-login" class="view">
+  <div class="login-wrap">
+    <div class="login-card">
+      <div class="login-top">
+        <div class="login-logo">
+          <div class="login-logo-mark"><svg viewBox="0 0 14 14" fill="none"><path d="M7 1L8.5 4.5H12.5L9.5 7L10.5 11L7 9L3.5 11L4.5 7L1.5 4.5H5.5L7 1Z" fill="#C4913D"/></svg></div>
+          <span class="login-logo-text">Tooldexo</span>
+        </div>
+        <div class="login-title">Sign in to continue</div>
+        <div class="login-sub">Enter your email. We'll send a magic link — no password ever.</div>
+      </div>
+      <div class="login-body">
+        <div id="login-err" class="err-box" style="display:none"></div>
+        <div id="email-state">
+          <div class="field-label">Email address</div>
+          <input class="field-input" id="emailInput" type="email" placeholder="you@example.com" autocomplete="email"/>
+          <button class="btn-login" id="loginBtn" onclick="sendMagicLink()" style="margin-top:10px">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 3l5 4-5 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Send magic link
+          </button>
+        </div>
+        <div class="sent-state" id="sent-state">
+          <div class="sent-icon"><svg viewBox="0 0 20 20" fill="none"><path d="M2 6l8 5 8-5M2 6v9a1 1 0 001 1h14a1 1 0 001-1V6M2 6a1 1 0 011-1h14a1 1 0 011 1" stroke="#C4913D" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="sent-title">Check your inbox</div>
+          <div class="sent-sub" id="sentEmailText">We sent a magic link to your email. Click it to sign in — expires in 15 minutes.</div>
+          <button class="resend-btn" onclick="showEmailForm()">Use a different email</button>
+        </div>
+      </div>
+      <div class="login-footer">
+        <div class="privacy-note">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" style="flex-shrink:0;margin-top:2px"><rect x="2" y="6" width="9" height="6" rx=".5" stroke="rgba(242,239,233,0.2)" stroke-width="1" fill="none"/><path d="M4 6V4.5a2.5 2.5 0 015 0V6" stroke="rgba(242,239,233,0.2)" stroke-width="1" fill="none"/></svg>
+          <span>No password. No tracking. 5 free parses/month — no card required.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="view-app" class="view">
+  <div class="topbar">
+    <div class="tb-left">
+      <a class="tb-logo" href="/"><div class="tb-logo-mark"><svg viewBox="0 0 10 10" fill="none"><path d="M5 1L6 3.5H9L7 5.5L7.5 8L5 6.5L2.5 8L3 5.5L1 3.5H4L5 1Z" fill="#C4913D"/></svg></div><span class="tb-logo-text">Tooldexo</span></a>
+      <span class="plan-pill plan-free" id="planPill">Free</span>
+      <span class="usage-pill" id="usagePill" style="display:none"></span>
+    </div>
+    <div class="tb-right">
+      <button class="upgrade-btn" id="upgradeTopBtn" onclick="showPaywall()">Upgrade — €10.99/mo</button>
+      <button class="logout-btn" onclick="logOut()">Log out</button>
+    </div>
+  </div>
+
+  <div class="tab-nav">
+    <button class="tnav-btn active" onclick="switchTab('parse')" id="tnav-parse">M1 · Parse</button>
+    <button class="tnav-btn" onclick="switchTab('flow')" id="tnav-flow">M2 · Flowchart</button>
+    <button class="tnav-btn" onclick="switchTab('export')" id="tnav-export">M3 · n8n Export</button>
+    <button class="tnav-btn" onclick="switchTab('library')" id="tnav-library">M4 · Library<span class="tnav-badge" id="libBadge" style="display:none">0</span></button>
+  </div>
+
+  <div class="app-content">
+
+    <!-- M1 -->
+    <div class="tab-panel active" id="panel-parse">
+      <div class="parse-grid">
+        <div class="panel-card">
+          <div class="card-head"><span class="card-title">Describe your workflow</span></div>
+          <div class="card-body">
+            <textarea class="task" id="taskIn" placeholder="e.g. Every time a new lead fills my Typeform, score them with AI, add to HubSpot, ping Slack, then send a proposal email…"></textarea>
+            <div class="examples">
+              <span class="ex" onclick="useEx(this)">New lead → CRM + Slack + email</span>
+              <span class="ex" onclick="useEx(this)">Invoice paid → sheet + receipt + notify</span>
+              <span class="ex" onclick="useEx(this)">Form submit → qualify + Notion + follow-up</span>
+              <span class="ex" onclick="useEx(this)">Weekly → fetch data + summarise + report</span>
+            </div>
+            <button class="btn-parse" id="parseBtn" onclick="runParse()">
+              <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1L8 4.5H12L9.5 6.5L10.5 10L6.5 8L2.5 10L3.5 6.5L1 4.5H5L6.5 1Z" fill="currentColor" opacity="0.9"/></svg>
+              Parse workflow
+            </button>
+            <div id="parseErr" class="err-inline" style="display:none;margin-top:10px"></div>
+          </div>
+        </div>
+        <div id="resultWrap" style="display:none" class="result-card">
+          <div class="rc-head">
+            <div><div class="rc-name" id="rcName">—</div><div class="rc-desc" id="rcDesc">—</div></div>
+            <div class="rc-btns">
+              <button class="icon-btn save" title="Save to library" onclick="saveToLibrary()"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 2h7l2 2v7a1 1 0 01-1 1H3a1 1 0 01-1-1V2z" stroke="currentColor" stroke-width="1.2" fill="none"/><rect x="3.5" y="8" width="6" height="3" stroke="currentColor" stroke-width="1.2" fill="none"/><rect x="3.5" y="2" width="4.5" height="3" stroke="currentColor" stroke-width="1.2" fill="none"/></svg></button>
+              <button class="icon-btn dl" title="Download n8n blueprint" onclick="downloadCurrent()"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1v8M6.5 9L4 6.5M6.5 9L9 6.5M1 11.5h11" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            </div>
+          </div>
+          <div class="steps-flow" id="stepsFlow"></div>
+          <div class="rc-footer">
+            <div class="foot-item">Complexity: <span id="fComplex">—</span></div>
+            <div class="foot-item">Saves: <span id="fTime">—</span></div>
+            <div class="foot-item">Tools: <span id="fTools">—</span></div>
+            <div class="foot-item">Steps: <span id="fSteps">—</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- M2 -->
+    <div class="tab-panel" id="panel-flow" style="display:none">
+      <div class="flow-toolbar">
+        <button class="ftb-btn" onclick="resetView()">Reset</button>
+        <button class="ftb-btn" onclick="runLayout()">Re-layout</button>
+        <button class="ftb-btn active" id="animBtn" onclick="toggleAnim()">Anim ON</button>
+      </div>
+      <canvas id="flowCanvas"></canvas>
+      <div class="canvas-hint" id="canvasHint">Parse a workflow in M1 · switch here to visualise</div>
+      <div class="inspector" id="inspector">
+        <button class="insp-close" onclick="closeInspector()">✕</button>
+        <div class="insp-type" id="iType">Node</div>
+        <div class="insp-name" id="iName">—</div>
+        <div class="insp-row"><div class="insp-label">Description</div><div class="insp-val" id="iDesc">—</div></div>
+        <div class="insp-row"><div class="insp-label">Tool</div><div class="insp-val" id="iTool">—</div></div>
+        <div class="insp-row"><div class="insp-label">Action</div><div class="insp-val" id="iAction">—</div></div>
+      </div>
+    </div>
+
+    <!-- M3 — Multi-platform export -->
+    <div class="tab-panel" id="panel-export">
+
+      <!-- Platform picker -->
+      <div style="display:flex;gap:1px;background:var(--border);flex-wrap:wrap" id="platformBar">
+        <button class="plat-btn active" onclick="selectPlatform('n8n')" id="plat-n8n">🔁 n8n</button>
+        <button class="plat-btn" onclick="selectPlatform('make')" id="plat-make">⚙️ Make.com</button>
+        <button class="plat-btn" onclick="selectPlatform('zapier')" id="plat-zapier">⚡ Zapier</button>
+        <button class="plat-btn" onclick="selectPlatform('google')" id="plat-google">☁️ Google Workflows</button>
+        <button class="plat-btn" onclick="selectPlatform('powerautomate')" id="plat-powerautomate">🔷 Power Automate</button>
+        <button class="plat-btn" onclick="selectPlatform('eventbridge')" id="plat-eventbridge">🟠 EventBridge</button>
+      </div>
+
+      <!-- Platform description -->
+      <div id="platDesc" style="font-size:12px;color:var(--text3);padding:8px 0 4px;font-family:'DM Mono',monospace"></div>
+
+      <div class="export-grid">
+        <!-- Left: workflow nodes -->
+        <div>
+          <div class="panel-card" style="margin-bottom:12px">
+            <div class="card-head"><span class="card-title">Workflow nodes</span><span style="font-size:10px;color:var(--text3);font-family:'DM Mono',monospace" id="nodeCount"></span></div>
+            <div class="card-body" style="padding:10px 14px"><div id="nodeListEl"><div style="font-size:12.5px;color:var(--text3);padding:8px 0">Parse a workflow in M1 first</div></div></div>
+            <div class="meta-strip" id="metaStrip" style="display:none">
+              <div class="meta-item">Complexity: <span id="mComplex">—</span></div>
+              <div class="meta-item">Saves: <span id="mTime">—</span></div>
+              <div class="meta-item">Tools: <span id="mToolsCount">—</span></div>
+            </div>
+          </div>
+          <div class="panel-card" id="nodeDetailPanel" style="display:none">
+            <div class="card-head"><span class="card-title" id="detailType">Node detail</span></div>
+            <div class="card-body" style="padding:10px 14px"><div id="detailBody" style="display:flex;flex-direction:column;gap:8px"></div></div>
+          </div>
+        </div>
+
+        <!-- Right: export panel -->
+        <div class="panel-card">
+          <div class="exp-tabs">
+            <button class="exp-tab active" onclick="switchExpTab('json')">Export</button>
+            <button class="exp-tab" onclick="switchExpTab('import')">Import guide</button>
+          </div>
+
+          <div class="exp-tab-content active" id="etab-json">
+            <div class="exp-actions">
+              <button class="exp-btn primary" id="dlBtn" onclick="downloadBlueprint()" disabled>
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v7M6 8L3.5 5.5M6 8L8.5 5.5M1 10.5h10" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                <span id="dlBtnLabel">Download .json</span>
+              </button>
+              <button class="exp-btn secondary" id="copyBpBtn" onclick="copyBlueprint()" disabled>Copy</button>
+            </div>
+            <div id="jsonPreviewEl"><div style="font-size:12px;color:var(--text3);padding:8px 0;font-family:'DM Mono',monospace">Select a platform above, then parse a workflow in M1</div></div>
+          </div>
+
+          <div class="exp-tab-content" id="etab-import">
+            <div id="importGuideEl"><div style="font-size:12.5px;color:var(--text3)">Select a platform to see import instructions</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- M4 -->
+    <div class="tab-panel" id="panel-library">
+      <div class="stats-bar" id="statsBar"></div>
+      <div class="lib-top">
+        <input class="search-box" id="searchBox" placeholder="Search playbooks…" oninput="renderLibrary()"/>
+        <select class="filter-sel" id="filterSel" onchange="renderLibrary()">
+          <option value="">All complexity</option>
+          <option value="simple">Simple</option>
+          <option value="moderate">Moderate</option>
+          <option value="complex">Complex</option>
+        </select>
+      </div>
+      <div class="lib-count" id="libCount"></div>
+      <div class="lib-grid" id="libGrid"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- PAYWALL -->
+<div class="paywall" id="paywall">
+  <div class="pw-card">
+    <div class="pw-head">
+      <div class="pw-icon">◈</div>
+      <div class="pw-price">€10.99<span style="font-size:16px;color:var(--text3);font-family:'DM Sans',sans-serif;font-weight:400">/mo</span></div>
+      <div class="pw-price-sub">Cancel anytime · no lock-in</div>
+      <div class="pw-title">Upgrade to Pro</div>
+      <div class="pw-sub" id="pwSub">You've used all 5 free parses this month. Upgrade for unlimited access.</div>
+    </div>
+    <div class="pw-features">
+      <div class="pw-feat"><div class="pw-check"><svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1 4l2 2 4-4" stroke="#C4913D" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Unlimited workflow parses</div>
+      <div class="pw-feat"><div class="pw-check"><svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1 4l2 2 4-4" stroke="#C4913D" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Visual flowchart renderer</div>
+      <div class="pw-feat"><div class="pw-check"><svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1 4l2 2 4-4" stroke="#C4913D" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>n8n blueprint export</div>
+      <div class="pw-feat"><div class="pw-check"><svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1 4l2 2 4-4" stroke="#C4913D" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Unlimited playbook library</div>
+    </div>
+    <div class="pw-actions">
+      <button class="pw-upgrade" id="pwUpgradeBtn" onclick="startCheckout()">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1L7 3.5H10.5L8 5.5L9 8.5L6 7L3 8.5L4 5.5L1.5 3.5H5L6 1Z" fill="currentColor"/></svg>
+        Upgrade now — €10.99/mo
+      </button>
+      <button class="pw-dismiss" onclick="hidePaywall()">Maybe later</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+'use strict';
+const API_BASE='';const STORAGE_KEY='tdx_session';const PB_KEY='tdx_playbooks_v1';const FREE_LIMIT=5;
+const ICONS=['⬡','◈','▦','◻','⬢','◉','▣','◆','⬛','▤'];
+const SYSTEM_PROMPT=`You are an automation workflow architect. When given a plain-English description of a repetitive task, extract and structure it into an automation workflow.
+
+Return ONLY valid JSON — no markdown, no explanation:
+{
+  "name": "Short descriptive name",
+  "description": "One sentence summary",
+  "trigger": { "type": "webhook|schedule|form|email|manual|app_event", "description": "What starts this automation" },
+  "steps": [
+    { "id": "step_1", "name": "Short step name", "description": "What this step does", "tool": "App/service name", "action": "Specific action" }
+  ],
+  "conditions": ["Branching logic as plain strings"],
+  "tools": ["All unique tools/apps needed"],
+  "complexity": "simple|moderate|complex",
+  "estimated_time_saved": "e.g. 3 hours/week",
+  "n8n_node_types": ["n8n node types e.g. n8n-nodes-base.gmail"]
+}
+Always include at least 3 steps. Return only the JSON object.`;
+const TOOL_TO_N8N={gmail:'n8n-nodes-base.gmail',email:'n8n-nodes-base.emailSend',slack:'n8n-nodes-base.slack',notion:'n8n-nodes-base.notion',airtable:'n8n-nodes-base.airtable',trello:'n8n-nodes-base.trello',hubspot:'n8n-nodes-base.hubspot',salesforce:'n8n-nodes-base.salesforce',stripe:'n8n-nodes-base.stripe',typeform:'n8n-nodes-base.typeform',sheets:'n8n-nodes-base.googleSheets',googlesheets:'n8n-nodes-base.googleSheets',jira:'n8n-nodes-base.jira',github:'n8n-nodes-base.github',discord:'n8n-nodes-base.discord',telegram:'n8n-nodes-base.telegram',whatsapp:'n8n-nodes-base.whatsApp',webhook:'n8n-nodes-base.webhook',http:'n8n-nodes-base.httpRequest',api:'n8n-nodes-base.httpRequest',mysql:'n8n-nodes-base.mySql',postgres:'n8n-nodes-base.postgres',openai:'@n8n/n8n-nodes-langchain.openAi',claude:'@n8n/n8n-nodes-langchain.anthropic',schedule:'n8n-nodes-base.scheduleTrigger',form:'n8n-nodes-base.formTrigger',calendar:'n8n-nodes-base.googleCalendar',drive:'n8n-nodes-base.googleDrive',mailchimp:'n8n-nodes-base.mailchimp',twilio:'n8n-nodes-base.twilio',pipedrive:'n8n-nodes-base.pipedrive',asana:'n8n-nodes-base.asana',clickup:'n8n-nodes-base.clickUp'};
+let sessionToken=null,userPlan='free',usedThisMonth=0,currentWF=null,n8nBP=null,selectedNodeId=null,loadedPbId=null;
+let cnodes=[],cedges=[],animOn=true,raf=null,tick=0,cdrag=null,cSelNode=null;
+const NW=172,NH=62;
+const NCOLORS={trigger:'#C4913D',step:'#2DD4BF',condition:'#F59E0B',end:'#9B6B3A'};
+const NBG={trigger:'rgba(196,145,61,0.1)',step:'rgba(45,212,191,0.08)',condition:'rgba(245,158,11,0.08)',end:'rgba(155,107,58,0.1)'};
+const NBD={trigger:'rgba(196,145,61,0.35)',step:'rgba(45,212,191,0.3)',condition:'rgba(245,158,11,0.3)',end:'rgba(155,107,58,0.35)'};
+let cam={x:0,y:0,zoom:1};
+
+function init(){
+  const hash=window.location.hash;
+
+  // New two-step flow: email scanner hits GET /api/auth?token= safely,
+  // which redirects here with #confirm=TOKEN. User must click a button to actually verify.
+  if(hash.includes('confirm=')){
+    const rawToken=hash.split('confirm=')[1].split('&')[0];
+    history.replaceState(null,'','/app');
+    showLoginView();
+    showConfirmStep(rawToken);
+    return;
+  }
+
+  if(hash.includes('auth-error=')){const m=decodeURIComponent(hash.split('auth-error=')[1].split('&')[0]);history.replaceState(null,'','/app');showLoginView();showLoginErr(m);return}
+  if(hash.includes('checkout=success')){history.replaceState(null,'','/app');const s=localStorage.getItem(STORAGE_KEY);if(s){sessionToken=s;loadAndShowApp(()=>toast('Welcome to Pro'));return}}
+  if(hash.includes('checkout=cancelled'))history.replaceState(null,'','/app');
+  const saved=localStorage.getItem(STORAGE_KEY);
+  if(saved){sessionToken=saved;loadAndShowApp()}else showLoginView();
+}
+
+function showConfirmStep(rawToken){
+  // Hide email form, show confirm button
+  document.getElementById('email-state').style.display='none';
+  document.getElementById('sent-state').style.display='none';
+  const err=document.getElementById('login-err');err.style.display='none';
+  const body=document.querySelector('.login-body');
+  const confirmDiv=document.createElement('div');
+  confirmDiv.id='confirm-state';
+  confirmDiv.style.cssText='display:flex;flex-direction:column;gap:12px;text-align:center;padding:4px 0';
+  confirmDiv.innerHTML=`
+    <div style="width:44px;height:44px;border:1px solid var(--gold-bd);display:flex;align-items:center;justify-content:center;margin:0 auto;font-size:20px">★</div>
+    <div style="font-family:'Playfair Display',serif;font-size:16px;color:var(--text)">Confirm sign in</div>
+    <div style="font-size:13px;color:var(--text2);line-height:1.6">Click below to complete your sign in to Tooldexo.</div>
+    <button id="confirmBtn" onclick="confirmSignIn('${rawToken}')" class="btn-login">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 3l5 4-5 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Confirm sign in
+    </button>
+    <div id="confirm-err" style="display:none;padding:10px 13px;background:var(--red-bg);border:1px solid var(--red-bd);font-size:13px;color:var(--red-t)"></div>
+    <button onclick="showEmailForm()" style="font-size:12.5px;color:var(--gold);background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif">Request a new link instead</button>
+  `;
+  body.appendChild(confirmDiv);
+}
+
+async function confirmSignIn(rawToken){
+  const btn=document.getElementById('confirmBtn');
+  const errEl=document.getElementById('confirm-err');
+  errEl.style.display='none';
+  btn.disabled=true;
+  btn.innerHTML='<div class="spinner" style="border-color:rgba(5,8,15,0.3);border-top-color:var(--bg)"></div> Verifying…';
+  try{
+    const res=await fetch('/api/auth/verify',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({token:rawToken})
+    });
+    const data=await res.json();
+    if(!res.ok)throw new Error(data.error||'Verification failed');
+    sessionToken=data.session_token;
+    localStorage.setItem(STORAGE_KEY,sessionToken);
+    loadAndShowApp();
+  }catch(e){
+    errEl.textContent=e.message;errEl.style.display='block';
+    btn.disabled=false;
+    btn.innerHTML='<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 3l5 4-5 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Confirm sign in';
+  }
+}
+function showLoginView(){document.getElementById('view-login').classList.add('active');document.getElementById('view-app').classList.remove('active')}
+function showLoginErr(m){const e=document.getElementById('login-err');e.textContent=m;e.style.display='block'}
+function showEmailForm(){document.getElementById('email-state').style.display='block';document.getElementById('sent-state').style.display='none';document.getElementById('login-err').style.display='none'}
+async function sendMagicLink(){
+  const email=document.getElementById('emailInput').value.trim();const err=document.getElementById('login-err');err.style.display='none';
+  if(!email){err.textContent='Please enter your email.';err.style.display='block';return}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){err.textContent='Invalid email address.';err.style.display='block';return}
+  const btn=document.getElementById('loginBtn');btn.disabled=true;btn.innerHTML='<div class="spinner"></div> Sending…';
+  try{const res=await fetch(`${API_BASE}/api/auth`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});const data=await res.json();if(!res.ok)throw new Error(data.error||'Could not send email');document.getElementById('email-state').style.display='none';document.getElementById('sentEmailText').textContent=`We sent a magic link to ${email}. Click it to sign in — expires in 15 minutes.`;const s=document.getElementById('sent-state');s.style.display='flex'}
+  catch(e){err.textContent=e.message;err.style.display='block'}
+  finally{btn.disabled=false;btn.innerHTML='<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 3l5 4-5 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Send magic link'}
+}
+function loadAndShowApp(cb){userPlan='free';showApp();updatePlanUI();updateLibBadge();initCanvas();if(cb)cb()}
+function showApp(){document.getElementById('view-login').classList.remove('active');document.getElementById('view-app').classList.add('active')}
+function logOut(){localStorage.removeItem(STORAGE_KEY);sessionToken=null;currentWF=null;n8nBP=null;cnodes=[];cedges=[];showLoginView();showEmailForm()}
+function updatePlanUI(){
+  const pill=document.getElementById('planPill'),usage=document.getElementById('usagePill'),upBtn=document.getElementById('upgradeTopBtn');
+  if(userPlan==='pro'){pill.textContent='Pro';pill.className='plan-pill plan-pro';usage.style.display='none';upBtn.style.display='none'}
+  else{pill.textContent='Free';pill.className='plan-pill plan-free';usage.textContent=`${usedThisMonth}/${FREE_LIMIT} parses`;usage.style.display='inline-block';upBtn.style.display='inline-block'}
+}
+async function callClaude(content){
+  const res=await fetch(`${API_BASE}/api/claude`,{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${sessionToken}`},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1200,system:SYSTEM_PROMPT,messages:[{role:'user',content}]})});
+  const data=await res.json();
+  if(res.status===402){showPaywall(data.message);throw new Error('__paywall__')}
+  if(res.status===401){logOut();throw new Error('Session expired — please log in again.')}
+  if(!res.ok)throw new Error(data.error||`API error ${res.status}`);
+  if(data._meta){userPlan=data._meta.plan;if(data._meta.used!==null)usedThisMonth=data._meta.used;updatePlanUI()}
+  const raw=data.content?.find(b=>b.type==='text')?.text||'';const cleaned=raw.replace(/```json\s*|```\s*/g,'').trim();
+  try{return JSON.parse(cleaned)}catch{throw new Error('Could not parse AI response. Try rephrasing your workflow.')}
+}
+function showPaywall(msg){if(msg)document.getElementById('pwSub').textContent=msg;document.getElementById('paywall').classList.add('active')}
+function hidePaywall(){document.getElementById('paywall').classList.remove('active')}
+async function startCheckout(){
+  const btn=document.getElementById('pwUpgradeBtn');btn.disabled=true;btn.innerHTML='<div class="spinner"></div> Redirecting…';
+  try{const res=await fetch(`${API_BASE}/api/stripe/checkout`,{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${sessionToken}`}});const data=await res.json();if(!res.ok)throw new Error(data.error||'Could not start checkout');if(data.url)window.location.href=data.url}
+  catch(e){toast('Checkout failed: '+e.message);btn.disabled=false;btn.innerHTML='<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1L7 3.5H10.5L8 5.5L9 8.5L6 7L3 8.5L4 5.5L1.5 3.5H5L6 1Z" fill="currentColor"/></svg> Upgrade now — €10.99/mo'}
+}
+async function runParse(){
+  const input=document.getElementById('taskIn').value.trim();if(!input)return;
+  const btn=document.getElementById('parseBtn'),err=document.getElementById('parseErr');
+  err.style.display='none';document.getElementById('resultWrap').style.display='none';
+  btn.disabled=true;btn.innerHTML='<div class="spinner" style="border-color:rgba(5,8,15,0.3);border-top-color:var(--bg)"></div> Parsing with Claude…';
+  try{currentWF=await callClaude(input);n8nBP=buildBlueprint(currentWF);cnodes=[];cedges=[];renderParseResult(currentWF);syncExportPanel(currentWF)}
+  catch(e){if(e.message!=='__paywall__'){err.textContent=e.message;err.style.display='block'}}
+  finally{btn.disabled=false;btn.innerHTML='<svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1L8 4.5H12L9.5 6.5L10.5 10L6.5 8L2.5 10L3.5 6.5L1 4.5H5L6.5 1Z" fill="currentColor" opacity="0.9"/></svg> Parse workflow'}
+}
+function dotColor(t){return NCOLORS[t]||NCOLORS.step}
+function renderParseResult(wf){
+  document.getElementById('rcName').textContent=wf.name||'Automation';document.getElementById('rcDesc').textContent=wf.description||'';
+  const cxMap={simple:'#2DD4BF',moderate:'#F59E0B',complex:'#EF4444'};const cx=wf.complexity||'';
+  document.getElementById('fComplex').innerHTML=cx?`<span style="color:${cxMap[cx]||'var(--text)'}">${cx}</span>`:'—';
+  document.getElementById('fTime').textContent=wf.estimated_time_saved||'—';document.getElementById('fTools').textContent=(wf.tools||[]).join(', ')||'—';document.getElementById('fSteps').textContent=(wf.steps||[]).length;
+  const all=[{type:'trigger',name:wf.trigger?.description||'Trigger',sub:wf.trigger?.type||'trigger',tool:''},...(wf.steps||[]).map(s=>({type:'step',name:s.name||'Step',sub:s.description||'',tool:s.tool||''})),...(wf.conditions||[]).map((c,i)=>({type:'condition',name:`Condition ${i+1}`,sub:typeof c==='string'?c:'',tool:''}))];
+  document.getElementById('stepsFlow').innerHTML=all.map((s,i)=>`<div class="flow-row"><div class="flow-conn"><div class="flow-dot" style="background:${dotColor(s.type)}"></div>${i<all.length-1?'<div class="flow-line"></div>':''}</div><div class="flow-content"><div class="flow-name">${esc(s.name)}${s.tool?`<span class="tool-pill">${esc(s.tool)}</span>`:''}</div><div class="flow-sub">${esc((s.sub||'').substring(0,80))}</div></div></div>`).join('');
+  document.getElementById('resultWrap').style.display='block';
+}
+function useEx(el){document.getElementById('taskIn').value=el.textContent;document.getElementById('parseErr').style.display='none';document.getElementById('resultWrap').style.display='none';currentWF=null}
+function initCanvas(){const c=document.getElementById('flowCanvas');c.addEventListener('mousedown',onMD);c.addEventListener('mousemove',onMM);c.addEventListener('mouseup',onMU);c.addEventListener('click',onMC);c.addEventListener('wheel',onMW,{passive:false});window.addEventListener('resize',resizeCanvas)}
+function resizeCanvas(){const c=document.getElementById('flowCanvas'),w=c.parentElement;if(!w||!w.clientWidth)return;const dpr=devicePixelRatio||1;c.width=w.clientWidth*dpr;c.height=(w.clientHeight||500)*dpr;c.style.width=w.clientWidth+'px';c.style.height=(w.clientHeight||500)+'px';c.getContext('2d').scale(dpr,dpr);if(!animOn)draw()}
+const w2s=(x,y)=>({x:x*cam.zoom+cam.x,y:y*cam.zoom+cam.y});const s2w=(x,y)=>({x:(x-cam.x)/cam.zoom,y:(y-cam.y)/cam.zoom});
+function buildGraph(wf){cnodes=[];cedges=[];const c=document.getElementById('flowCanvas');const cw=c.width/(devicePixelRatio||1)||600;const ch=c.height/(devicePixelRatio||1)||500;const total=1+(wf.steps||[]).length+(wf.conditions||[]).length+1;const sy=Math.min(110,(ch-80)/Math.max(total,1));let y=60;const cx=cw/2-NW/2;cnodes.push({id:'trigger',type:'trigger',x:cx,y,w:NW,h:NH,label:wf.trigger?.description||'Trigger',sub:wf.trigger?.type||'trigger',tool:'',action:'',desc:wf.trigger?.description||''});let prev='trigger';y+=sy+NH;(wf.steps||[]).forEach((s,i)=>{const id=s.id||`step_${i}`;cnodes.push({id,type:'step',x:cx,y,w:NW,h:NH,label:s.name||'Step',sub:s.tool||'',tool:s.tool||'',action:s.action||'',desc:s.description||''});cedges.push({from:prev,to:id});prev=id;y+=sy+NH});(wf.conditions||[]).forEach((c,i)=>{const id=`cond_${i}`;cnodes.push({id,type:'condition',x:cx,y,w:NW,h:NH,label:typeof c==='string'?c.substring(0,32):'Condition',sub:'branch',tool:'',action:'',desc:typeof c==='string'?c:''});cedges.push({from:prev,to:id});prev=id;y+=sy+NH});cnodes.push({id:'end',type:'end',x:cx,y,w:NW,h:NH,label:'Workflow complete',sub:wf.estimated_time_saved?`Saves ${wf.estimated_time_saved}`:'Done',tool:'',action:'',desc:'End of automation'});cedges.push({from:prev,to:'end'});fitView();document.getElementById('canvasHint').textContent=`"${wf.name}" · ${cnodes.length} nodes · Drag · Scroll to zoom · Click to inspect`}
+function fitView(){if(!cnodes.length)return;const c=document.getElementById('flowCanvas');const cw=c.width/(devicePixelRatio||1),ch=c.height/(devicePixelRatio||1);const xs=cnodes.map(n=>n.x),ys=cnodes.map(n=>n.y);const minX=Math.min(...xs),maxX=Math.max(...xs)+NW,minY=Math.min(...ys),maxY=Math.max(...ys)+NH;const gw=maxX-minX||1,gh=maxY-minY||1;cam.zoom=Math.min((cw-60)/gw,(ch-60)/gh,1.2,2);cam.x=(cw-gw*cam.zoom)/2-minX*cam.zoom;cam.y=(ch-gh*cam.zoom)/2-minY*cam.zoom}
+function resetView(){fitView();if(!animOn)draw()}
+function runLayout(){if(!cnodes.length)return;const c=document.getElementById('flowCanvas');const cx=c.width/(devicePixelRatio||1)/2-NW/2;cnodes.forEach((n,i)=>{n.x=cx;n.y=60+i*(NH+100)});fitView();if(!animOn)draw()}
+function rr(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath()}
+function drawNode(ctx,n){
+  const s=w2s(n.x,n.y);const sw=n.w*cam.zoom,sh=n.h*cam.zoom;const isSel=cSelNode&&cSelNode.id===n.id;
+  ctx.save();
+  // flat rect no radius for sovereign look
+  ctx.beginPath();ctx.rect(s.x,s.y,sw,sh);ctx.fillStyle=NBG[n.type]||NBG.step;ctx.fill();ctx.strokeStyle=isSel?'rgba(242,239,233,0.5)':NBD[n.type]||NBD.step;ctx.lineWidth=(isSel?1.5:0.7)*cam.zoom;ctx.stroke();
+  // left accent bar
+  ctx.beginPath();ctx.rect(s.x,s.y,2*cam.zoom,sh);ctx.fillStyle=NCOLORS[n.type]||NCOLORS.step;ctx.fill();
+  const maxW=sw-26*cam.zoom;
+  ctx.font=`500 ${Math.max(9,12*cam.zoom)}px 'DM Sans',sans-serif`;ctx.fillStyle='rgba(242,239,233,0.88)';ctx.textBaseline='middle';
+  let label=n.label||'';while(ctx.measureText(label).width>maxW&&label.length>0)label=label.slice(0,-1);if(label!==n.label)label=label.slice(0,-1)+'…';ctx.fillText(label,s.x+14*cam.zoom,s.y+sh*.36);
+  ctx.font=`400 ${Math.max(8,10*cam.zoom)}px 'DM Mono',monospace`;ctx.fillStyle=(NCOLORS[n.type]||NCOLORS.step)+'88';
+  let sub=n.sub||'';while(ctx.measureText(sub).width>maxW&&sub.length>0)sub=sub.slice(0,-1);if(sub!==n.sub)sub=sub.slice(0,-1)+'…';ctx.fillText(sub,s.x+14*cam.zoom,s.y+sh*.67);ctx.restore();
+}
+function bPt(x0,y0,x1,y1,x2,y2,x3,y3,t){const m=1-t;return{x:m*m*m*x0+3*m*m*t*x1+3*m*t*t*x2+t*t*t*x3,y:m*m*m*y0+3*m*m*t*y1+3*m*t*t*y2+t*t*t*y3}}
+function drawEdge(ctx,e){const from=cnodes.find(n=>n.id===e.from),to=cnodes.find(n=>n.id===e.to);if(!from||!to)return;const fs=w2s(from.x+from.w/2,from.y+from.h),ts=w2s(to.x+to.w/2,to.y),midY=(fs.y+ts.y)/2;ctx.save();ctx.beginPath();ctx.moveTo(fs.x,fs.y);ctx.bezierCurveTo(fs.x,midY,ts.x,midY,ts.x,ts.y);ctx.strokeStyle='rgba(196,145,61,0.15)';ctx.lineWidth=1;ctx.setLineDash([4,4]);ctx.stroke();ctx.setLineDash([]);if(animOn){const p=(tick*.0006)%1;[0,.08].forEach(o=>{const pp=(p+o)%1;const pt=bPt(fs.x,fs.y,fs.x,midY,ts.x,midY,ts.x,ts.y,pp);const a=1-Math.abs(pp-.5)*2;ctx.beginPath();ctx.arc(pt.x,pt.y,2,0,Math.PI*2);ctx.fillStyle=`rgba(196,145,61,${a*.7})`;ctx.fill()})}ctx.beginPath();ctx.moveTo(ts.x-4,ts.y-6);ctx.lineTo(ts.x,ts.y);ctx.lineTo(ts.x+4,ts.y-6);ctx.strokeStyle='rgba(196,145,61,0.4)';ctx.lineWidth=1.2;ctx.setLineDash([]);ctx.stroke();ctx.restore()}
+function drawGrid(ctx){const c=document.getElementById('flowCanvas');const cw=c.width/(devicePixelRatio||1),ch=c.height/(devicePixelRatio||1);const gs=48*cam.zoom,ox=((cam.x%gs)+gs)%gs,oy=((cam.y%gs)+gs)%gs;ctx.strokeStyle='rgba(242,239,233,0.03)';ctx.lineWidth=0.5;for(let x=ox;x<cw;x+=gs){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,ch);ctx.stroke()}for(let y=oy;y<ch;y+=gs){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(cw,y);ctx.stroke()}}
+function draw(t){tick=t||tick;const c=document.getElementById('flowCanvas');const ctx=c.getContext('2d');const cw=c.width/(devicePixelRatio||1),ch=c.height/(devicePixelRatio||1);ctx.clearRect(0,0,cw,ch);drawGrid(ctx);if(!cnodes.length){ctx.font="13px 'DM Sans',sans-serif";ctx.fillStyle='rgba(242,239,233,0.1)';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('Parse a workflow in M1 · then switch here to visualise',cw/2,ch/2);ctx.textAlign='left';return}cedges.forEach(e=>drawEdge(ctx,e));cnodes.forEach(n=>drawNode(ctx,n))}
+function loop(t){draw(t);raf=requestAnimationFrame(loop)}
+function toggleAnim(){animOn=!animOn;const b=document.getElementById('animBtn');b.textContent=`Anim ${animOn?'ON':'OFF'}`;b.classList.toggle('active',animOn);if(animOn&&!raf)raf=requestAnimationFrame(loop)}
+function nodeAt(mx,my){for(let i=cnodes.length-1;i>=0;i--){const n=cnodes[i];const s=w2s(n.x,n.y);if(mx>=s.x&&mx<=s.x+n.w*cam.zoom&&my>=s.y&&my<=s.y+n.h*cam.zoom)return n}return null}
+function onMD(e){const r=e.target.getBoundingClientRect();const mx=e.clientX-r.left,my=e.clientY-r.top;const n=nodeAt(mx,my);if(n){cdrag={node:n,ox:mx-w2s(n.x,n.y).x,oy:my-w2s(n.x,n.y).y};e.target.style.cursor='grabbing'}else{cdrag={pan:true,sx:mx-cam.x,sy:my-cam.y};e.target.style.cursor='grabbing'}}
+function onMM(e){const r=e.target.getBoundingClientRect();const mx=e.clientX-r.left,my=e.clientY-r.top;if(!cdrag){e.target.style.cursor=nodeAt(mx,my)?'grab':'default';return}if(cdrag.node){const w=s2w(mx-cdrag.ox,my-cdrag.oy);cdrag.node.x=w.x;cdrag.node.y=w.y}else if(cdrag.pan){cam.x=mx-cdrag.sx;cam.y=my-cdrag.sy}if(!animOn)draw()}
+function onMU(e){cdrag=null;e.target.style.cursor='default'}
+function onMC(e){const r=e.target.getBoundingClientRect();const n=nodeAt(e.clientX-r.left,e.clientY-r.top);cSelNode=n||null;if(n)showInsp(n);else closeInspector();if(!animOn)draw()}
+function onMW(e){e.preventDefault();const r=e.target.getBoundingClientRect();const mx=e.clientX-r.left,my=e.clientY-r.top;const f=e.deltaY<0?1.09:.92;const wb=s2w(mx,my);cam.zoom=Math.min(Math.max(cam.zoom*f,.15),3);const wa=s2w(mx,my);cam.x+=(wa.x-wb.x)*cam.zoom;cam.y+=(wa.y-wb.y)*cam.zoom;if(!animOn)draw()}
+function showInsp(n){document.getElementById('inspector').style.display='block';document.getElementById('iType').textContent=n.type.toUpperCase();document.getElementById('iName').textContent=n.label;document.getElementById('iDesc').textContent=n.desc||'—';document.getElementById('iTool').innerHTML=n.tool?`<span class="insp-tag">${esc(n.tool)}</span>`:'—';document.getElementById('iAction').innerHTML=n.action?`<span class="insp-action">${esc(n.action)}</span>`:'—'}
+function closeInspector(){document.getElementById('inspector').style.display='none';cSelNode=null;if(!animOn)draw()}
+function guessN8n(tool,trigType){if(!tool&&trigType){const tk=trigType.toLowerCase();if(tk.includes('schedule')||tk.includes('cron'))return'n8n-nodes-base.scheduleTrigger';if(tk.includes('webhook'))return'n8n-nodes-base.webhook';if(tk.includes('form'))return'n8n-nodes-base.formTrigger';if(tk.includes('email'))return'n8n-nodes-base.emailTrigger';return'n8n-nodes-base.webhook'}const k=(tool||'').toLowerCase().replace(/[^a-z]/g,'');for(const[t,v]of Object.entries(TOOL_TO_N8N))if(k.includes(t))return v;return'n8n-nodes-base.httpRequest'}
+function buildBlueprint(wf){const nodes=[],connections={};let y=100;const px=300,sy=200;const tName=(wf.trigger?.description||'Trigger').substring(0,40);nodes.push({id:'node_trigger',name:tName,type:guessN8n('',wf.trigger?.type),typeVersion:1,position:[px,y],parameters:{note:`TRIGGER: ${wf.trigger?.description||''}`}});let prev=tName;y+=sy;(wf.steps||[]).forEach((s,i)=>{const n=(s.name||`Step ${i+1}`).substring(0,40);const t=(wf.n8n_node_types&&wf.n8n_node_types[i])?wf.n8n_node_types[i]:guessN8n(s.tool,'');nodes.push({id:`node_step_${i}`,name:n,type:t,typeVersion:1,position:[px,y],parameters:{note:`${s.action||''}: ${s.description||''}`,resource:s.tool||'',operation:s.action||''}});if(!connections[prev])connections[prev]={main:[[]]};connections[prev].main[0].push({node:n,type:'main',index:0});prev=n;y+=sy});(wf.conditions||[]).forEach((c,i)=>{const n=`Condition ${i+1}`;nodes.push({id:`node_cond_${i}`,name:n,type:'n8n-nodes-base.if',typeVersion:2,position:[px,y],parameters:{conditions:{string:[{value1:'',operation:'contains',value2:typeof c==='string'?c.substring(0,60):''}]}}});if(!connections[prev])connections[prev]={main:[[]]};connections[prev].main[0].push({node:n,type:'main',index:0});prev=n;y+=sy});return{name:wf.name||'My Automation',nodes,connections,active:false,settings:{executionOrder:'v1'},meta:{instanceId:typeof crypto!=='undefined'&&crypto.randomUUID?crypto.randomUUID():Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2)}}}
+function syncExportPanel(wf){
+  const all=[
+    {id:'trigger',type:'trigger',label:wf.trigger?.description||'Trigger',sub:wf.trigger?.type||'trigger',tool:'',action:'',desc:wf.trigger?.description||''},
+    ...(wf.steps||[]).map((s,i)=>({id:`step_${i}`,type:'step',label:s.name||`Step ${i+1}`,sub:s.tool||'',tool:s.tool||'',action:s.action||'',desc:s.description||''})),
+    ...(wf.conditions||[]).map((c,i)=>({id:`cond_${i}`,type:'condition',label:`Condition ${i+1}`,sub:typeof c==='string'?c.substring(0,40):c,tool:'',action:'',desc:typeof c==='string'?c:''}))
+  ];
+  document.getElementById('nodeCount').textContent=`${all.length} nodes`;
+  document.getElementById('nodeListEl').innerHTML=all.map(n=>`<div class="n-row${selectedNodeId===n.id?' selected':''}" id="nrow_${n.id}" onclick="selExpNode('${n.id}',${JSON.stringify(n).replace(/"/g,'&quot;')})"><div class="n-dot ${n.type}"></div><div style="flex:1;min-width:0"><div class="n-label">${esc(n.label)}</div><div class="n-sub">${esc(n.sub||'')}</div></div><div class="n-type-tag tag-${n.type}">${n.type}</div></div>`).join('');
+  document.getElementById('mComplex').textContent=wf.complexity||'—';
+  document.getElementById('mTime').textContent=wf.estimated_time_saved||'—';
+  document.getElementById('mToolsCount').textContent=(wf.tools||[]).length;
+  document.getElementById('metaStrip').style.display='flex';
+  // Render for current platform
+  renderPlatformBlueprint(wf);
+  // Set initial platform description
+  document.getElementById('platDesc').textContent = currentPlatform.description;
+}
+function selExpNode(id,node){selectedNodeId=id;document.querySelectorAll('.n-row').forEach(r=>r.classList.remove('selected'));document.getElementById(`nrow_${id}`)?.classList.add('selected');const n8nType=node.type==='trigger'?guessN8n('',currentWF?.trigger?.type):node.type==='condition'?'n8n-nodes-base.if':guessN8n(node.tool,'');document.getElementById('detailType').textContent=`${node.type.toUpperCase()} · ${node.label}`;document.getElementById('detailBody').innerHTML=`<div class="schema-item"><div class="schema-key">n8n node type</div><div class="schema-val" style="font-family:'DM Mono',monospace;font-size:11px;color:var(--gold)">${esc(n8nType)}</div></div><div class="schema-item"><div class="schema-key">Description</div><div class="schema-val">${esc(node.desc||'—')}</div></div>${node.tool?`<div class="schema-item"><div class="schema-key">Integration</div><div class="schema-val">${esc(node.tool)}</div></div>`:''}${node.action?`<div class="schema-item"><div class="schema-key">Action</div><div class="schema-val">${esc(node.action)}</div></div>`:''}`;document.getElementById('nodeDetailPanel').style.display='block'}
+function downloadBlueprint(){
+  if(!currentWF)return;
+  try{
+    const output=currentPlatform.build(currentWF);
+    const isYaml=currentPlatform.ext==='yaml';
+    const text=isYaml?(typeof output==='string'?output:JSON.stringify(output,null,2)):JSON.stringify(output,null,2);
+    const mime=isYaml?'text/yaml':'application/json';
+    dlFile(text,currentPlatform.filename(currentWF),mime);
+  }catch(e){toast('Export error: '+e.message)}
+}
+function copyBlueprint(){
+  if(!currentWF)return;
+  try{
+    const output=currentPlatform.build(currentWF);
+    const isYaml=currentPlatform.ext==='yaml';
+    const text=isYaml?(typeof output==='string'?output:JSON.stringify(output,null,2)):JSON.stringify(output,null,2);
+    navigator.clipboard.writeText(text).then(()=>{
+      const b=document.getElementById('copyBpBtn');b.textContent='Copied';setTimeout(()=>b.textContent='Copy',1800)
+    });
+  }catch(e){toast('Export error: '+e.message)}
+}
+function downloadCurrent(){downloadBlueprint()}
+function switchExpTab(t){document.querySelectorAll('.exp-tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.exp-tab-content').forEach(x=>x.classList.remove('active'));document.querySelector(`.exp-tab[onclick="switchExpTab('${t}')"]`).classList.add('active');document.getElementById(`etab-${t}`).classList.add('active')}
+// exporters.js
+// All 5 platform exporters — n8n, Make.com, Zapier, Google Cloud Workflows,
+// Microsoft Power Automate, Amazon EventBridge Pipes
+
+// ─────────────────────────────────────────────────────────────
+// SHARED TOOL MAPS
+// ─────────────────────────────────────────────────────────────
+
+const TOOL_TO_N8N = {
+  gmail:'n8n-nodes-base.gmail',email:'n8n-nodes-base.emailSend',
+  slack:'n8n-nodes-base.slack',notion:'n8n-nodes-base.notion',
+  airtable:'n8n-nodes-base.airtable',trello:'n8n-nodes-base.trello',
+  hubspot:'n8n-nodes-base.hubspot',salesforce:'n8n-nodes-base.salesforce',
+  stripe:'n8n-nodes-base.stripe',typeform:'n8n-nodes-base.typeform',
+  sheets:'n8n-nodes-base.googleSheets',googlesheets:'n8n-nodes-base.googleSheets',
+  jira:'n8n-nodes-base.jira',github:'n8n-nodes-base.github',
+  discord:'n8n-nodes-base.discord',telegram:'n8n-nodes-base.telegram',
+  whatsapp:'n8n-nodes-base.whatsApp',webhook:'n8n-nodes-base.webhook',
+  http:'n8n-nodes-base.httpRequest',api:'n8n-nodes-base.httpRequest',
+  mysql:'n8n-nodes-base.mySql',postgres:'n8n-nodes-base.postgres',
+  openai:'@n8n/n8n-nodes-langchain.openAi',claude:'@n8n/n8n-nodes-langchain.anthropic',
+  schedule:'n8n-nodes-base.scheduleTrigger',form:'n8n-nodes-base.formTrigger',
+  calendar:'n8n-nodes-base.googleCalendar',drive:'n8n-nodes-base.googleDrive',
+  mailchimp:'n8n-nodes-base.mailchimp',twilio:'n8n-nodes-base.twilio',
+  pipedrive:'n8n-nodes-base.pipedrive',asana:'n8n-nodes-base.asana',
+  clickup:'n8n-nodes-base.clickUp',zoom:'n8n-nodes-base.zoom',
+  shopify:'n8n-nodes-base.shopify',woocommerce:'n8n-nodes-base.wooCommerce',
+  quickbooks:'n8n-nodes-base.quickbooks',xero:'n8n-nodes-base.xero'
+};
+
+const TOOL_TO_MAKE = {
+  gmail:'google-gmail',email:'email',slack:'slack',notion:'notion',
+  airtable:'airtable',trello:'trello',hubspot:'hubspot-crm',
+  salesforce:'salesforce',stripe:'stripe',typeform:'typeform',
+  sheets:'google-sheets',googlesheets:'google-sheets',jira:'jira',
+  github:'github',discord:'discord',telegram:'telegram',
+  whatsapp:'whatsapp-business-cloud',webhook:'gateway',
+  http:'http',api:'http',mysql:'mysql',postgres:'postgresql',
+  openai:'openai',claude:'anthropic',schedule:'schedule',
+  calendar:'google-calendar',drive:'google-drive',
+  mailchimp:'mailchimp',twilio:'twilio',pipedrive:'pipedrive',
+  asana:'asana',clickup:'clickup',zoom:'zoom',
+  shopify:'shopify',quickbooks:'quickbooks',xero:'xero'
+};
+
+const TOOL_TO_ZAPIER = {
+  gmail:'Gmail',email:'Email by Zapier',slack:'Slack',notion:'Notion',
+  airtable:'Airtable',trello:'Trello',hubspot:'HubSpot',
+  salesforce:'Salesforce',stripe:'Stripe',typeform:'Typeform',
+  sheets:'Google Sheets',googlesheets:'Google Sheets',jira:'Jira Software',
+  github:'GitHub',discord:'Discord',telegram:'Telegram',
+  webhook:'Webhooks by Zapier',http:'Webhooks by Zapier',
+  api:'Webhooks by Zapier',mysql:'MySQL',postgres:'PostgreSQL',
+  openai:'OpenAI (GPT-4 & DALL-E)',claude:'Anthropic (Claude)',
+  schedule:'Schedule by Zapier',calendar:'Google Calendar',
+  drive:'Google Drive',mailchimp:'Mailchimp',twilio:'Twilio',
+  pipedrive:'Pipedrive',asana:'Asana',clickup:'ClickUp',
+  zoom:'Zoom',shopify:'Shopify',xero:'Xero'
+};
+
+const TOOL_TO_POWERAUTOMATE = {
+  gmail:'Gmail',email:'Mail',slack:'Slack',notion:'Notion',
+  airtable:'Airtable',trello:'Trello',hubspot:'HubSpot',
+  salesforce:'Salesforce',stripe:'Stripe',typeform:'Typeform',
+  sheets:'Excel Online (Business)',googlesheets:'Google Sheets',
+  jira:'Jira',github:'GitHub',discord:'HTTP',telegram:'HTTP',
+  webhook:'HTTP',http:'HTTP',api:'HTTP',
+  mysql:'SQL Server',postgres:'PostgreSQL',
+  openai:'AI Builder',schedule:'Recurrence',
+  calendar:'Google Calendar',drive:'Google Drive',
+  mailchimp:'Mailchimp',twilio:'Twilio',
+  pipedrive:'Pipedrive',asana:'Asana',clickup:'HTTP',
+  zoom:'Zoom',shopify:'Shopify',xero:'Xero'
+};
+
+function guessN8nType(tool, triggerType) {
+  if (!tool && triggerType) {
+    const t = triggerType.toLowerCase();
+    if (t.includes('schedule') || t.includes('cron')) return 'n8n-nodes-base.scheduleTrigger';
+    if (t.includes('webhook')) return 'n8n-nodes-base.webhook';
+    if (t.includes('form')) return 'n8n-nodes-base.formTrigger';
+    if (t.includes('email')) return 'n8n-nodes-base.emailTrigger';
+    return 'n8n-nodes-base.webhook';
+  }
+  const k = (tool || '').toLowerCase().replace(/[^a-z]/g, '');
+  for (const [key, val] of Object.entries(TOOL_TO_N8N)) {
+    if (k.includes(key)) return val;
+  }
+  return 'n8n-nodes-base.httpRequest';
+}
+
+function getMakeTool(tool) {
+  const k = (tool || '').toLowerCase().replace(/[^a-z]/g, '');
+  for (const [key, val] of Object.entries(TOOL_TO_MAKE)) {
+    if (k.includes(key)) return val;
+  }
+  return 'http';
+}
+
+function getZapierApp(tool) {
+  const k = (tool || '').toLowerCase().replace(/[^a-z]/g, '');
+  for (const [key, val] of Object.entries(TOOL_TO_ZAPIER)) {
+    if (k.includes(key)) return val;
+  }
+  return 'Webhooks by Zapier';
+}
+
+function getPowerAutomateConnector(tool) {
+  const k = (tool || '').toLowerCase().replace(/[^a-z]/g, '');
+  for (const [key, val] of Object.entries(TOOL_TO_POWERAUTOMATE)) {
+    if (k.includes(key)) return val;
+  }
+  return 'HTTP';
+}
+
+function uid() {
+  return typeof crypto !== 'undefined' && crypto.randomUUID
+    ? crypto.randomUUID()
+    : Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
+}
+
+// ─────────────────────────────────────────────────────────────
+// 1. n8n EXPORTER
+// ─────────────────────────────────────────────────────────────
+function exportN8n(wf) {
+  const nodes = [], connections = {};
+  let y = 100;
+  const px = 300, sy = 200;
+
+  const tName = (wf.trigger?.description || 'Trigger').substring(0, 40);
+  nodes.push({
+    id: 'node_trigger', name: tName,
+    type: guessN8nType('', wf.trigger?.type),
+    typeVersion: 1, position: [px, y],
+    parameters: { note: `TRIGGER: ${wf.trigger?.description || ''}` }
+  });
+  let prev = tName; y += sy;
+
+  (wf.steps || []).forEach((s, i) => {
+    const n = (s.name || `Step ${i + 1}`).substring(0, 40);
+    const t = (wf.n8n_node_types && wf.n8n_node_types[i])
+      ? wf.n8n_node_types[i]
+      : guessN8nType(s.tool, '');
+    nodes.push({
+      id: `node_step_${i}`, name: n, type: t,
+      typeVersion: 1, position: [px, y],
+      parameters: { note: `${s.action || ''}: ${s.description || ''}`, resource: s.tool || '', operation: s.action || '' }
+    });
+    if (!connections[prev]) connections[prev] = { main: [[]] };
+    connections[prev].main[0].push({ node: n, type: 'main', index: 0 });
+    prev = n; y += sy;
+  });
+
+  (wf.conditions || []).forEach((c, i) => {
+    const n = `Condition ${i + 1}`;
+    nodes.push({
+      id: `node_cond_${i}`, name: n,
+      type: 'n8n-nodes-base.if', typeVersion: 2, position: [px, y],
+      parameters: { conditions: { string: [{ value1: '', operation: 'contains', value2: typeof c === 'string' ? c.substring(0, 60) : '' }] } }
+    });
+    if (!connections[prev]) connections[prev] = { main: [[]] };
+    connections[prev].main[0].push({ node: n, type: 'main', index: 0 });
+    prev = n; y += sy;
+  });
+
+  return {
+    name: wf.name || 'My Automation',
+    nodes, connections,
+    active: false,
+    settings: { executionOrder: 'v1' },
+    meta: { instanceId: uid(), templateId: 'tooldexo-v1' }
+  };
+}
+
+// ─────────────────────────────────────────────────────────────
+// 2. Make.com EXPORTER
+// ─────────────────────────────────────────────────────────────
+function exportMake(wf) {
+  const modules = [];
+  let id = 1;
+
+  // Trigger module
+  const trigTool = getMakeTool(wf.trigger?.type || 'webhook');
+  modules.push({
+    id: id++,
+    module: `${trigTool}:TriggerNewEvent`,
+    version: 1,
+    parameters: { hook: 0, maxResults: 1 },
+    mapper: {},
+    metadata: {
+      designer: { x: 0, y: 0 },
+      restore: { parameters: { hook: { label: wf.trigger?.description || 'Trigger' } } },
+      expect: [{ name: 'data', type: 'collection', label: 'Data' }]
+    }
+  });
+
+  // Step modules
+  (wf.steps || []).forEach((s, i) => {
+    const app = getMakeTool(s.tool);
+    modules.push({
+      id: id++,
+      module: `${app}:ActionCreate`,
+      version: 1,
+      parameters: {},
+      mapper: { name: s.name || `Step ${i + 1}`, description: s.description || '' },
+      metadata: {
+        designer: { x: (i + 1) * 300, y: 0 },
+        restore: {},
+        expect: [
+          { name: 'name', type: 'text', label: 'Name' },
+          { name: 'description', type: 'text', label: 'Description' }
+        ],
+        label: s.name || `Step ${i + 1}`
+      }
+    });
+  });
+
+  // Condition modules
+  (wf.conditions || []).forEach((c, i) => {
+    modules.push({
+      id: id++,
+      module: 'builtin:BasicRouter',
+      version: 1,
+      parameters: {},
+      mapper: null,
+      metadata: {
+        designer: { x: (modules.length) * 300, y: 0 },
+        restore: { routes: [{ label: 'Route 1' }, { label: 'Route 2' }] }
+      },
+      routes: [
+        { flow: [{ id: id++, module: 'builtin:BasicFilter', version: 1, parameters: { condition: typeof c === 'string' ? c : 'condition', type: 'and' }, mapper: null, metadata: { designer: { x: 0, y: 0 } } }] },
+        { flow: [] }
+      ]
+    });
+  });
+
+  return {
+    name: wf.name || 'My Automation',
+    flow: modules,
+    metadata: {
+      instant: wf.trigger?.type === 'webhook',
+      version: 1,
+      scenario: { roundtrips: 1, maxErrors: 3, autoCommit: true, autoCommitTriggerLast: true, sequential: false, slots: null, confidential: false, dataloss: false, dlq: false, freshVariables: false },
+      designer: { orphans: [] },
+      zone: 'eu1.make.com'
+    }
+  };
+}
+
+// ─────────────────────────────────────────────────────────────
+// 3. Zapier EXPORTER
+// ─────────────────────────────────────────────────────────────
+function exportZapier(wf) {
+  const steps = [];
+
+  // Trigger
+  const trigApp = getZapierApp(wf.trigger?.type || 'webhook');
+  steps.push({
+    id: uid(),
+    type_of: 'read',
+    app: { name: trigApp, image: '' },
+    action: {
+      key: 'trigger',
+      noun: 'Trigger',
+      display: { label: wf.trigger?.description || 'Trigger', description: wf.trigger?.description || '' }
+    },
+    params: {}
+  });
+
+  // Actions
+  (wf.steps || []).forEach((s) => {
+    const app = getZapierApp(s.tool);
+    steps.push({
+      id: uid(),
+      type_of: 'write',
+      app: { name: app, image: '' },
+      action: {
+        key: (s.action || 'create').toLowerCase().replace(/\s+/g, '_'),
+        noun: s.name || 'Record',
+        display: { label: s.name || 'Action', description: s.description || '' }
+      },
+      params: { name: s.name || '', description: s.description || '' }
+    });
+  });
+
+  // Filters for conditions
+  (wf.conditions || []).forEach((c) => {
+    steps.push({
+      id: uid(),
+      type_of: 'filter',
+      app: { name: 'Filter by Zapier', image: '' },
+      action: {
+        key: 'filter',
+        noun: 'Filter',
+        display: { label: 'Only continue if', description: typeof c === 'string' ? c : 'Condition' }
+      },
+      params: { conditions: [{ field: '', condition: 'exists', value: '' }] }
+    });
+  });
+
+  return {
+    title: wf.name || 'My Zap',
+    description: wf.description || '',
+    status: 'draft',
+    steps,
+    metadata: {
+      created_by: 'Tooldexo',
+      estimated_time_saved: wf.estimated_time_saved || '',
+      complexity: wf.complexity || 'simple'
+    }
+  };
+}
+
+// ─────────────────────────────────────────────────────────────
+// 4. Google Cloud Workflows EXPORTER
+// ─────────────────────────────────────────────────────────────
+function exportGoogleWorkflows(wf) {
+  const steps = {};
+
+  // Trigger comment step
+  steps['init'] = {
+    assign: [
+      { workflow_name: wf.name || 'automation' },
+      { trigger: wf.trigger?.description || 'trigger' },
+      { started_at: '${sys.now()}' }
+    ]
+  };
+
+  // HTTP call steps for each action
+  (wf.steps || []).forEach((s, i) => {
+    const stepKey = `step_${i + 1}_${(s.name || 'action').toLowerCase().replace(/[^a-z0-9]/g, '_').substring(0, 20)}`;
+    steps[stepKey] = {
+      call: 'http.post',
+      args: {
+        url: `https://api.${(s.tool || 'example').toLowerCase().replace(/[^a-z0-9]/g, '')}.com/v1/${(s.action || 'action').toLowerCase().replace(/\s+/g, '-')}`,
+        auth: { type: 'OAuth2' },
+        body: {
+          name: s.name || '',
+          description: s.description || '',
+          action: s.action || ''
+        }
+      },
+      result: `${stepKey}_result`
+    };
+  });
+
+  // Condition steps
+  (wf.conditions || []).forEach((c, i) => {
+    const condKey = `condition_${i + 1}`;
+    steps[condKey] = {
+      switch: [{
+        condition: `\${${condKey}_check == true}`,
+        next: `step_${i + 2}_action`
+      }],
+      next: 'end'
+    };
+  });
+
+  steps['end'] = {
+    return: {
+      status: 'completed',
+      workflow: wf.name || 'automation',
+      completed_at: '${sys.now()}'
+    }
+  };
+
+  return {
+    main: {
+      steps: Object.entries(steps).map(([key, value]) => ({ [key]: value }))
+    }
+  };
+}
+
+// ─────────────────────────────────────────────────────────────
+// 5. Microsoft Power Automate EXPORTER
+// ─────────────────────────────────────────────────────────────
+function exportPowerAutomate(wf) {
+  const actions = {};
+  let runAfter = {};
+
+  // Build trigger
+  const triggerType = (wf.trigger?.type || 'manual').toLowerCase();
+  let trigger;
+
+  if (triggerType.includes('schedule') || triggerType.includes('cron')) {
+    trigger = {
+      recurrence: {
+        type: 'Recurrence',
+        recurrence: { frequency: 'Day', interval: 1 },
+        metadata: { operationMetadataId: uid() }
+      }
+    };
+  } else if (triggerType.includes('http') || triggerType.includes('webhook')) {
+    trigger = {
+      manual: {
+        type: 'Request',
+        kind: 'Http',
+        inputs: { schema: { type: 'object', properties: { data: { type: 'object' } } } },
+        metadata: { operationMetadataId: uid() }
+      }
+    };
+  } else {
+    trigger = {
+      manual: {
+        type: 'Request',
+        kind: 'Button',
+        metadata: { operationMetadataId: uid() }
+      }
+    };
+  }
+
+  // Build actions for each step
+  (wf.steps || []).forEach((s, i) => {
+    const actionKey = `Step_${i + 1}_${(s.name || 'Action').replace(/[^a-zA-Z0-9]/g, '_').substring(0, 30)}`;
+    const connector = getPowerAutomateConnector(s.tool);
+
+    if (connector === 'HTTP') {
+      actions[actionKey] = {
+        type: 'Http',
+        inputs: {
+          method: 'POST',
+          uri: `https://api.${(s.tool || 'example').toLowerCase().replace(/[^a-z0-9]/g, '')}.com/v1/action`,
+          headers: { 'Content-Type': 'application/json' },
+          body: { action: s.action || '', description: s.description || '' }
+        },
+        runAfter,
+        metadata: { operationMetadataId: uid(), comment: s.description || '' }
+      };
+    } else {
+      actions[actionKey] = {
+        type: 'ApiConnection',
+        inputs: {
+          host: { connectionName: connector.toLowerCase().replace(/\s/g, ''), operationId: (s.action || 'send').replace(/\s+/g, ''), apiId: `/providers/Microsoft.PowerApps/apis/shared_${connector.toLowerCase().replace(/\s/g, '')}` },
+          parameters: { text: s.description || s.name || '' },
+          authentication: { type: 'Raw', value: "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$connections']['shared_office365']['token']" }
+        },
+        runAfter,
+        metadata: { operationMetadataId: uid(), comment: s.description || '' }
+      };
+    }
+
+    runAfter = { [actionKey]: ['Succeeded'] };
+  });
+
+  // Condition actions
+  (wf.conditions || []).forEach((c, i) => {
+    const condKey = `Condition_${i + 1}`;
+    actions[condKey] = {
+      type: 'If',
+      expression: { and: [{ equals: ['@true', '@true'] }] },
+      actions: {},
+      else: { actions: {} },
+      runAfter,
+      metadata: { operationMetadataId: uid(), comment: typeof c === 'string' ? c : 'Condition' }
+    };
+    runAfter = { [condKey]: ['Succeeded'] };
+  });
+
+  return {
+    '$schema': 'https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#',
+    contentVersion: '1.0.0.0',
+    parameters: { '$connections': { defaultValue: {}, type: 'Object' } },
+    triggers: trigger,
+    actions,
+    outputs: {},
+    metadata: {
+      createdBy: 'Tooldexo',
+      workflowName: wf.name || 'My Flow',
+      description: wf.description || '',
+      estimatedTimeSaved: wf.estimated_time_saved || ''
+    }
+  };
+}
+
+// ─────────────────────────────────────────────────────────────
+// 6. Amazon EventBridge Pipes EXPORTER
+// ─────────────────────────────────────────────────────────────
+function exportEventBridge(wf) {
+  const pipeId = (wf.name || 'automation').toLowerCase().replace(/[^a-z0-9]/g, '-').substring(0, 40);
+
+  // Source mapping
+  let sourceArn = 'arn:aws:sqs:us-east-1:123456789012:MyQueue';
+  const trigType = (wf.trigger?.type || '').toLowerCase();
+  if (trigType.includes('schedule')) {
+    sourceArn = 'arn:aws:events:us-east-1:123456789012:rule/MySchedule';
+  } else if (trigType.includes('form') || trigType.includes('webhook')) {
+    sourceArn = 'arn:aws:sqs:us-east-1:123456789012:TriggerQueue';
+  } else if (trigType.includes('email')) {
+    sourceArn = 'arn:aws:ses:us-east-1:123456789012:receipt-rule/MyRule';
+  }
+
+  // Target mapping — use last step or Lambda fallback
+  const lastStep = (wf.steps || []).slice(-1)[0];
+  const lastTool = (lastStep?.tool || '').toLowerCase();
+  let targetArn = 'arn:aws:lambda:us-east-1:123456789012:function:WorkflowProcessor';
+
+  if (lastTool.includes('sns') || lastTool.includes('notify')) {
+    targetArn = 'arn:aws:sns:us-east-1:123456789012:NotificationTopic';
+  } else if (lastTool.includes('sqs') || lastTool.includes('queue')) {
+    targetArn = 'arn:aws:sqs:us-east-1:123456789012:TargetQueue';
+  } else if (lastTool.includes('step') || lastTool.includes('state')) {
+    targetArn = 'arn:aws:states:us-east-1:123456789012:stateMachine:WorkflowStateMachine';
+  }
+
+  // Build enrichment Lambda for multi-step workflows
+  const enrichmentSteps = (wf.steps || []).map((s, i) => ({
+    stepNumber: i + 1,
+    name: s.name || `Step ${i + 1}`,
+    tool: s.tool || 'http',
+    action: s.action || 'execute',
+    description: s.description || ''
+  }));
+
+  return {
+    Name: pipeId,
+    Description: wf.description || wf.name || 'Tooldexo generated workflow',
+    DesiredState: 'STOPPED',
+    Source: sourceArn,
+    SourceParameters: {
+      FilterCriteria: {
+        Filters: [{
+          Pattern: JSON.stringify({ source: [{ prefix: 'tooldexo' }] })
+        }]
+      },
+      SqsQueueParameters: { BatchSize: 1, MaximumBatchingWindowInSeconds: 0 }
+    },
+    Enrichment: 'arn:aws:lambda:us-east-1:123456789012:function:WorkflowEnrichment',
+    EnrichmentParameters: {
+      InputTemplate: JSON.stringify({
+        workflowName: wf.name || 'automation',
+        trigger: wf.trigger?.description || '',
+        steps: enrichmentSteps,
+        conditions: wf.conditions || []
+      })
+    },
+    Target: targetArn,
+    TargetParameters: {
+      InputTemplate: JSON.stringify({
+        workflowResult: '<$.workflowResult>',
+        originalEvent: '<$.originalEvent>',
+        metadata: {
+          workflowName: wf.name || 'automation',
+          completedAt: '<$.completedAt>'
+        }
+      })
+    },
+    Tags: {
+      CreatedBy: 'Tooldexo',
+      WorkflowName: wf.name || 'automation',
+      Complexity: wf.complexity || 'simple',
+      EstimatedTimeSaved: wf.estimated_time_saved || 'unknown'
+    },
+    TooldexoMetadata: {
+      tools: wf.tools || [],
+      stepCount: (wf.steps || []).length,
+      hasConditions: (wf.conditions || []).length > 0,
+      deployInstructions: [
+        '1. Replace all ARNs with your actual AWS resource ARNs',
+        '2. Create the Lambda enrichment function with the step logic',
+        '3. Ensure IAM roles have permissions for source and target',
+        '4. Deploy via AWS Console → EventBridge → Pipes → Create pipe',
+        '5. Or use AWS CLI: aws pipes create-pipe --cli-input-json file://this-file.json'
+      ]
+    }
+  };
+}
+
+// ─────────────────────────────────────────────────────────────
+// EXPORT ALL — master function called from the UI
+// ─────────────────────────────────────────────────────────────
+const PLATFORMS = [
+  {
+    id: 'n8n',
+    name: 'n8n',
+    logo: '🔁',
+    description: 'Self-hosted or cloud automation',
+    ext: 'json',
+    filename: wf => `${slug(wf.name)}-n8n.json`,
+    build: exportN8n,
+    importGuide: [
+      'Open n8n → + New workflow',
+      'Top-right menu → Import from file',
+      'Select your downloaded .json',
+      'Add credentials per node then activate'
+    ]
+  },
+  {
+    id: 'make',
+    name: 'Make.com',
+    logo: '⚙️',
+    description: 'Formerly Integromat',
+    ext: 'json',
+    filename: wf => `${slug(wf.name)}-make.json`,
+    build: exportMake,
+    importGuide: [
+      'Open Make.com → Scenarios → Create new scenario',
+      'Click the three dots → Import Blueprint',
+      'Upload your .json file',
+      'Connect your app accounts and activate'
+    ]
+  },
+  {
+    id: 'zapier',
+    name: 'Zapier',
+    logo: '⚡',
+    description: 'Most popular no-code automation',
+    ext: 'json',
+    filename: wf => `${slug(wf.name)}-zapier.json`,
+    build: exportZapier,
+    importGuide: [
+      'Note: Zapier does not support direct JSON import',
+      'Use this file as a reference blueprint',
+      'Go to zapier.com → Create Zap',
+      'Follow the step sequence in the JSON to rebuild manually',
+      'The app names and actions are pre-mapped for you'
+    ]
+  },
+  {
+    id: 'google',
+    name: 'Google Cloud Workflows',
+    logo: '☁️',
+    description: 'GCP serverless orchestration',
+    ext: 'yaml',
+    filename: wf => `${slug(wf.name)}-google-workflows.yaml`,
+    build: wf => {
+      // Convert to YAML-like string representation
+      const obj = exportGoogleWorkflows(wf);
+      return objToYaml(obj);
+    },
+    buildRaw: exportGoogleWorkflows,
+    importGuide: [
+      'Go to Google Cloud Console → Workflows',
+      'Click Create workflow',
+      'Paste the YAML content into the workflow editor',
+      'Add your service account and required permissions',
+      'Deploy and trigger via Cloud Scheduler or HTTP'
+    ]
+  },
+  {
+    id: 'powerautomate',
+    name: 'Power Automate',
+    logo: '🔷',
+    description: 'Microsoft automation platform',
+    ext: 'json',
+    filename: wf => `${slug(wf.name)}-power-automate.json`,
+    build: exportPowerAutomate,
+    importGuide: [
+      'Open Power Automate → My flows → Import',
+      'Select "Import Package" and upload your .json',
+      'Map connections to your Microsoft accounts',
+      'Turn on the flow when ready'
+    ]
+  },
+  {
+    id: 'eventbridge',
+    name: 'Amazon EventBridge',
+    logo: '🟠',
+    description: 'AWS event-driven automation',
+    ext: 'json',
+    filename: wf => `${slug(wf.name)}-eventbridge.json`,
+    build: exportEventBridge,
+    importGuide: [
+      'Replace all ARN placeholders with your real AWS ARNs',
+      'Create required Lambda functions for enrichment steps',
+      'Go to AWS Console → EventBridge → Pipes → Create pipe',
+      'Or use: aws pipes create-pipe --cli-input-json file://this-file.json',
+      'Ensure IAM roles have correct permissions'
+    ]
+  }
+];
+
+function slug(name) {
+  return (name || 'automation').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+}
+
+function objToYaml(obj, indent = 0) {
+  const pad = '  '.repeat(indent);
+  let out = '';
+  for (const [k, v] of Object.entries(obj)) {
+    if (v === null || v === undefined) {
+      out += `${pad}${k}: null\n`;
+    } else if (typeof v === 'string') {
+      const escaped = v.includes('\n') ? `|\n${pad}  ${v.replace(/\n/g, `\n${pad}  `)}` : `"${v.replace(/"/g, '\\"')}"`;
+      out += `${pad}${k}: ${escaped}\n`;
+    } else if (typeof v === 'number' || typeof v === 'boolean') {
+      out += `${pad}${k}: ${v}\n`;
+    } else if (Array.isArray(v)) {
+      out += `${pad}${k}:\n`;
+      v.forEach(item => {
+        if (typeof item === 'object' && item !== null) {
+          out += `${pad}- \n${objToYaml(item, indent + 1).replace(/^/gm, '  ')}`;
+        } else {
+          out += `${pad}  - ${item}\n`;
+        }
+      });
+    } else if (typeof v === 'object') {
+      out += `${pad}${k}:\n${objToYaml(v, indent + 1)}`;
+    }
+  }
+  return out;
+}
+
+
+let currentPlatform = PLATFORMS[0];
+
+function selectPlatform(id) {
+  currentPlatform = PLATFORMS.find(p => p.id === id) || PLATFORMS[0];
+  document.querySelectorAll('.plat-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('plat-' + id)?.classList.add('active');
+  document.getElementById('platDesc').textContent = currentPlatform.description;
+  const ext = currentPlatform.ext;
+  document.getElementById('dlBtnLabel').textContent = 'Download .' + ext;
+  // Rebuild preview with new platform
+  if (currentWF) {
+    renderPlatformBlueprint(currentWF);
+  }
+}
+
+function renderPlatformBlueprint(wf) {
+  try {
+    const output = currentPlatform.build(wf);
+    const isYaml = currentPlatform.ext === 'yaml';
+    const text = isYaml ? (typeof output === 'string' ? output : JSON.stringify(output, null, 2)) : JSON.stringify(output, null, 2);
+    document.getElementById('jsonPreviewEl').innerHTML = `<div class="json-box">${isYaml ? esc(text) : syntaxHL(text)}</div>`;
+    document.getElementById('dlBtn').disabled = false;
+    document.getElementById('copyBpBtn').disabled = false;
+    // Import guide
+    const guide = currentPlatform.importGuide || [];
+    document.getElementById('importGuideEl').innerHTML = `
+      <div class="import-guide" style="margin-bottom:10px">
+        <strong style="color:var(--gold)">Import into ${currentPlatform.name}</strong>
+        ${guide.map((s,i) => `${i+1}. ${s}<br>`).join('')}
+      </div>`;
+  } catch(e) {
+    document.getElementById('jsonPreviewEl').innerHTML = `<div style="font-size:12px;color:var(--red-t);padding:8px 0">Export error: ${e.message}</div>`;
+  }
+}
+
+const getPBs=()=>{try{return JSON.parse(localStorage.getItem(PB_KEY)||'[]')}catch{return[]}};const setPBs=arr=>{try{localStorage.setItem(PB_KEY,JSON.stringify(arr))}catch{}};
+function saveToLibrary(){if(!currentWF)return;const pbs=getPBs();pbs.unshift({id:`pb_${Date.now()}`,icon:ICONS[Math.floor(Math.random()*ICONS.length)],name:currentWF.name||'Automation',description:currentWF.description||'',complexity:currentWF.complexity||'simple',tools:currentWF.tools||[],estimated_time_saved:currentWF.estimated_time_saved||'',steps_count:(currentWF.steps||[]).length,saved_at:Date.now(),workflow:currentWF});setPBs(pbs);updateLibBadge();toast('Saved to library')}
+function deletePB(id,e){e.stopPropagation();setPBs(getPBs().filter(p=>p.id!==id));if(loadedPbId===id)loadedPbId=null;renderLibrary();updateLibBadge()}
+function dlPB(id,e){e.stopPropagation();const pb=getPBs().find(p=>p.id===id);if(!pb)return;const bp=buildBlueprint(pb.workflow);dlFile(JSON.stringify(bp,null,2),`${(pb.name||'automation').toLowerCase().replace(/[^a-z0-9]+/g,'-')}-n8n.json`,'application/json');toast('Blueprint downloaded')}
+function loadPB(id){const pb=getPBs().find(p=>p.id===id);if(!pb)return;currentWF=pb.workflow;n8nBP=buildBlueprint(currentWF);cnodes=[];cedges=[];loadedPbId=id;document.getElementById('taskIn').value=pb.name;renderParseResult(pb.workflow);syncExportPanel(pb.workflow);switchTab('parse');toast(`Loaded: ${pb.name}`)}
+function renderLibrary(){
+  const q=(document.getElementById('searchBox')?.value||'').toLowerCase();const f=document.getElementById('filterSel')?.value||'';let pbs=getPBs();
+  if(q)pbs=pbs.filter(p=>p.name.toLowerCase().includes(q)||(p.description||'').toLowerCase().includes(q)||(p.tools||[]).some(t=>t.toLowerCase().includes(q)));if(f)pbs=pbs.filter(p=>p.complexity===f);
+  document.getElementById('libCount').textContent=`${pbs.length} playbook${pbs.length!==1?'s':''}`;
+  const all=getPBs();const toolSet=new Set(all.flatMap(p=>p.tools||[]));
+  document.getElementById('statsBar').innerHTML=`<div class="stat-chip"><div class="stat-num">${all.length}</div><div class="stat-lbl">Saved</div></div><div class="stat-chip"><div class="stat-num">${toolSet.size}</div><div class="stat-lbl">Tools</div></div><div class="stat-chip"><div class="stat-num">${all.reduce((a,p)=>a+(p.steps_count||0),0)}</div><div class="stat-lbl">Steps</div></div><div class="stat-chip"><div class="stat-num">${all.filter(p=>p.complexity==='complex').length}</div><div class="stat-lbl">Complex</div></div>`;
+  const grid=document.getElementById('libGrid');
+  if(!pbs.length){grid.innerHTML=`<div class="empty-lib"><div class="empty-lib-title">${all.length?'No matches':'Library is empty'}</div><div class="empty-lib-sub">${all.length?'Try a different search or filter':'Parse a workflow and click the save icon to add it here'}</div></div>`;return}
+  const cxStyle=cx=>cx==='simple'?'background:rgba(45,212,191,0.08);border-color:rgba(45,212,191,0.2);color:#2DD4BF':cx==='moderate'?'background:rgba(245,158,11,0.08);border-color:rgba(245,158,11,0.2);color:#F59E0B':'background:rgba(239,68,68,0.07);border-color:rgba(239,68,68,0.18);color:#FCA5A5';
+  grid.innerHTML=pbs.map(p=>`<div class="lib-card${loadedPbId===p.id?' loaded':''}" onclick="loadPB('${p.id}')"><div class="lc-icon">${p.icon||'⬡'}</div><div class="lc-body"><div class="lc-name">${esc(p.name)}</div><div class="lc-desc">${esc(p.description)}</div><div class="lc-meta"><span class="lc-tag" style="${cxStyle(p.complexity||'simple')}">${p.complexity||'simple'}</span>${(p.tools||[]).slice(0,3).map(t=>`<span class="lc-tag" style="background:var(--gold-bg);border-color:var(--gold-bd);color:var(--gold)">${esc(t)}</span>`).join('')}${(p.tools||[]).length>3?`<span style="font-size:10px;color:var(--text3)">+${(p.tools||[]).length-3}</span>`:''}</div></div><div class="lc-actions"><button class="sm-btn" onclick="dlPB('${p.id}',event)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v7M6 8L3.5 5.5M6 8L8.5 5.5M1 10.5h10" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></button><button class="sm-btn del" onclick="deletePB('${p.id}',event)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 3h8M5 3V2h2v1M4 3v6.5a.5.5 0 00.5.5h3a.5.5 0 00.5-.5V3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></button></div></div>`).join('');
+}
+function updateLibBadge(){const n=getPBs().length;const b=document.getElementById('libBadge');if(n>0){b.textContent=n;b.style.display='inline-block'}else b.style.display='none'}
+function switchTab(tab){document.querySelectorAll('.tnav-btn').forEach(b=>b.classList.remove('active'));document.querySelectorAll('.tab-panel').forEach(p=>{p.classList.remove('active');p.style.display='none'});document.getElementById(`tnav-${tab}`).classList.add('active');const panel=document.getElementById(`panel-${tab}`);panel.classList.add('active');panel.style.display='flex';if(tab==='flow'){resizeCanvas();if(currentWF&&cnodes.length===0)buildGraph(currentWF);if(!raf&&animOn)raf=requestAnimationFrame(loop)}if(tab==='library')renderLibrary()}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function syntaxHL(json){return json.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/("(?:\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(?:true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,m=>{if(/^"/.test(m))return/:$/.test(m)?`<span class="jk">${m}</span>`:`<span class="js">${m}</span>`;if(/true|false/.test(m))return`<span class="jb">${m}</span>`;if(/null/.test(m))return`<span class="jb">${m}</span>`;return`<span class="jn">${m}</span>`})}
+function dlFile(content,filename,type){const blob=new Blob([content],{type});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url)}
+let toastTimer=null;function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2400)}
+document.getElementById('emailInput')?.addEventListener('keydown',e=>{if(e.key==='Enter')sendMagicLink()});
+init();
+</script>
+</body>
+</html>
