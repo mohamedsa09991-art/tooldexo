@@ -1154,6 +1154,8 @@ function init(){
       history.replaceState(null,'','/app');
       sessionToken=accessToken;
       localStorage.setItem(STORAGE_KEY,sessionToken);
+      const refreshToken=params.get('refresh_token');
+      if(refreshToken)localStorage.setItem('tdx_refresh',refreshToken);
       loadAndShowApp(()=>toast('✓ Signed in successfully'));
       return;
     }
@@ -1256,7 +1258,7 @@ async function confirmSignIn(rawToken){
   try{
     const res=await fetch('/api/auth/verify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:rawToken})});
     const data=await res.json();if(!res.ok)throw new Error(data.error||'Verification failed');
-    sessionToken=data.session_token;localStorage.setItem(STORAGE_KEY,sessionToken);loadAndShowApp();
+    sessionToken=data.session_token;localStorage.setItem(STORAGE_KEY,sessionToken);if(data.refresh_token)localStorage.setItem('tdx_refresh',data.refresh_token);loadAndShowApp();
   }catch(e){
     errEl.textContent=e.message;errEl.style.display='block';
     btn.disabled=false;btn.innerHTML='<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 3l5 4-5 4" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Confirm sign in';
@@ -1265,7 +1267,7 @@ async function confirmSignIn(rawToken){
 
 function loadAndShowApp(cb){userPlan='free';showApp();updatePlanUI();updateLibBadge();initCanvas();if(cb)cb()}
 function showApp(){document.getElementById('view-login').classList.remove('active');document.getElementById('view-app').classList.add('active')}
-function logOut(){localStorage.removeItem(STORAGE_KEY);sessionToken=null;currentWF=null;cnodes=[];cedges=[];showLoginView();showEmailForm()}
+function logOut(){localStorage.removeItem(STORAGE_KEY);localStorage.removeItem('tdx_refresh');sessionToken=null;currentWF=null;cnodes=[];cedges=[];showLoginView();showEmailForm()}
 
 function updatePlanUI(){
   const pill=document.getElementById('planPill'),usage=document.getElementById('usagePill'),upBtn=document.getElementById('upgradeTopBtn');
@@ -1274,11 +1276,41 @@ function updatePlanUI(){
 }
 
 // ── CLAUDE API ───────────────────────────────────────────────────────────────
+
+// ── SILENT TOKEN REFRESH ─────────────────────────────────────────────────────
+async function tryRefreshToken() {
+  const refreshToken = localStorage.getItem('tdx_refresh');
+  if (!refreshToken) return false;
+  try {
+    const { data, error } = await _supa.auth.refreshSession({ refresh_token: refreshToken });
+    if (error || !data?.session) return false;
+    sessionToken = data.session.access_token;
+    localStorage.setItem(STORAGE_KEY, sessionToken);
+    if (data.session.refresh_token) localStorage.setItem('tdx_refresh', data.session.refresh_token);
+    return true;
+  } catch(e) {
+    return false;
+  }
+}
+
 async function callClaude(content,sysPrompt){
   const res=await fetch(`${API_BASE}/api/claude`,{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${sessionToken}`},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1200,system:sysPrompt||SYSTEM_PROMPT,messages:[{role:'user',content}]})});
   const data=await res.json();
   if(res.status===402){showPaywall(data.message);throw new Error('__paywall__')}
-  if(res.status===401){logOut();throw new Error('Session expired — please log in again.')}
+  if(res.status===401){
+    // Try silent token refresh before logging out
+    const refreshed = await tryRefreshToken();
+    if(refreshed){
+      // Retry once with new token
+      const retry=await fetch(`${API_BASE}/api/claude`,{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${sessionToken}`},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:2000,system:sysPrompt||SYSTEM_PROMPT,messages:[{role:'user',content}]})});
+      if(retry.status===401){logOut();throw new Error('Session expired — please sign in again.')}
+      const retryData=await retry.json();
+      if(!retry.ok)throw new Error(retryData.error||`API error ${retry.status}`);
+      if(retryData._meta){userPlan=retryData._meta.plan;if(retryData._meta.used!=null)usedThisMonth=retryData._meta.used;updatePlanUI()}
+      return retryData.content?.find(b=>b.type==='text')?.text||'';
+    }
+    logOut();throw new Error('Session expired — please sign in again.');
+  }
   if(!res.ok)throw new Error(data.error||`API error ${res.status}`);
   if(data._meta){userPlan=data._meta.plan;if(data._meta.used!=null)usedThisMonth=data._meta.used;updatePlanUI()}
   const raw=data.content?.find(b=>b.type==='text')?.text||'';
