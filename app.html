@@ -425,7 +425,7 @@ textarea.translate-input:focus{border-color:rgba(102,126,234,0.45)}
 
 /* OAuth buttons */
 .oauth-btns{display:flex;flex-direction:column;gap:8px;margin-bottom:4px}
-.oauth-btn{width:100%;padding:11px 16px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:9px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13.5px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:11px;transition:all .15s;text-align:left}
+.oauth-btn{width:100%;padding:11px 16px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:9px;color:var(--text);font-family:'DM Sans',-apple-system,sans-serif;font-size:13.5px;font-weight:500;font-style:normal;letter-spacing:0;cursor:pointer;display:flex;align-items:center;gap:11px;transition:all .15s;text-align:left}
 .oauth-btn:hover{background:rgba(255,255,255,0.09);border-color:rgba(255,255,255,0.2)}
 .oauth-btn:disabled{opacity:.45;cursor:default}
 .oauth-btn-icon{width:20px;height:20px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
@@ -434,6 +434,7 @@ textarea.translate-input:focus{border-color:rgba(102,126,234,0.45)}
 .divider-line{flex:1;height:1px;background:rgba(255,255,255,0.08)}
 .divider-txt{font-size:11px;color:var(--text3);font-family:'DM Sans',sans-serif;white-space:nowrap}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
 <body>
 
@@ -1171,23 +1172,34 @@ function init(){
 function showLoginView(){document.getElementById('view-login').classList.add('active');document.getElementById('view-app').classList.remove('active')}
 
 // ── OAUTH LOGIN ──────────────────────────────────────────────────────────────
+// Supabase client for OAuth (uses anon key — safe to expose)
+const _supa = window.supabase.createClient(
+  'https://exsvvpymyuamoojgqxuu.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV4c3Z2cHlteXVhbW9vamdxeHV1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM5NjYyNTAsImV4cCI6MjA1OTU0MjI1MH0.placeholder'
+);
+
 async function oauthLogin(provider) {
   const buttons = document.querySelectorAll('.oauth-btn');
   buttons.forEach(b => b.disabled = true);
-  document.getElementById('login-err').style.display = 'none';
+  const err = document.getElementById('login-err');
+  err.style.display = 'none';
+
+  // Map our provider names to Supabase provider names
+  const providerMap = { google: 'google', azure: 'azure', github: 'github' };
+  const supaProvider = providerMap[provider];
 
   try {
-    const res = await fetch(`${API_BASE}/api/auth/oauth`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ provider, redirect_url: window.location.origin + '/app' })
+    const { data, error } = await _supa.auth.signInWithOAuth({
+      provider: supaProvider,
+      options: {
+        redirectTo: window.location.origin + '/app',
+        scopes: provider === 'azure' ? 'email profile openid' : undefined,
+      }
     });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'OAuth error');
-    if (data.url) window.location.href = data.url;
+    if (error) throw error;
+    // Supabase automatically redirects the browser — nothing else needed
   } catch(e) {
-    const err = document.getElementById('login-err');
-    err.textContent = e.message;
+    err.textContent = e.message || 'Sign in failed. Please try again.';
     err.style.display = 'block';
     buttons.forEach(b => b.disabled = false);
   }
